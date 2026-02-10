@@ -1,0 +1,159 @@
+[Thu Feb  5 14:46:17 2026] PHP 8.3.30 Development Server (http://127.0.0.1:8000) started
+[Thu Feb  5 14:46:24 2026] 127.0.0.1:50901 Accepted
+[Thu Feb  5 14:46:24 2026] 127.0.0.1:50901 Closing
+[Thu Feb  5 14:46:24 2026] 127.0.0.1:50902 Accepted
+[Thu Feb  5 14:46:25 2026] 127.0.0.1:50902 Closing
+[Thu Feb  5 14:51:59 2026] 127.0.0.1:50932 Accepted
+[Thu Feb  5 14:51:59 2026] 127.0.0.1:50932 Closing
+[Thu Feb  5 14:51:59 2026] 127.0.0.1:50933 Accepted
+[Thu Feb  5 14:52:00 2026] 127.0.0.1:50933 Closing
+[Thu Feb  5 15:23:23 2026] 127.0.0.1:51710 Accepted
+[Thu Feb  5 15:23:23 2026] 127.0.0.1:51710 Closing
+[Thu Feb  5 15:23:23 2026] 127.0.0.1:51712 Accepted
+[Thu Feb  5 15:23:23 2026] 127.0.0.1:51712 Closing
+[Thu Feb  5 15:34:35 2026] 127.0.0.1:51770 Accepted
+[Thu Feb  5 15:34:35 2026] 127.0.0.1:51770 Closing
+[Thu Feb  5 15:34:35 2026] 127.0.0.1:51771 Accepted
+[Thu Feb  5 15:34:35 2026] 127.0.0.1:51771 Closing
+[Thu Feb  5 15:35:36 2026] 127.0.0.1:51780 Accepted
+[Thu Feb  5 15:35:37 2026] 127.0.0.1:51780 Closing
+[Thu Feb  5 15:35:37 2026] 127.0.0.1:51782 Accepted
+[Thu Feb  5 15:35:37 2026] 127.0.0.1:51782 Closing
+[Thu Feb  5 15:40:36 2026] 127.0.0.1:51798 Accepted
+[Thu Feb  5 15:40:36 2026] 127.0.0.1:51798 Closing
+[Thu Feb  5 15:40:36 2026] 127.0.0.1:51799 Accepted
+[Thu Feb  5 15:40:36 2026] 127.0.0.1:51799 Closing
+[Thu Feb  5 15:45:31 2026] 127.0.0.1:51830 Accepted
+[Thu Feb  5 15:45:31 2026] 127.0.0.1:51830 Closing
+[Thu Feb  5 15:45:31 2026] 127.0.0.1:51831 Accepted
+[Thu Feb  5 15:45:31 2026] 127.0.0.1:51831 [200]: GET /favicon.ico
+[Thu Feb  5 15:45:31 2026] 127.0.0.1:51831 Closing
+[Thu Feb  5 15:47:55 2026] 127.0.0.1:51848 Accepted
+[Thu Feb  5 15:47:55 2026] 127.0.0.1:51848 Closing
+[Thu Feb  5 15:47:55 2026] 127.0.0.1:51849 Accepted
+[Thu Feb  5 15:47:56 2026] 127.0.0.1:51849 Closing
+[Thu Feb  5 15:48:00 2026] 127.0.0.1:51851 Accepted
+[Thu Feb  5 15:48:00 2026] 127.0.0.1:51852 Accepted
+[Thu Feb  5 15:48:00 2026] 127.0.0.1:51851 Closing
+[Thu Feb  5 15:48:00 2026] 127.0.0.1:51852 [200]: GET /favicon.ico
+[Thu Feb  5 15:48:00 2026] 127.0.0.1:51852 Closing
+[Thu Feb  5 15:49:25 2026] 127.0.0.1:51863 Accepted
+[Thu Feb  5 15:49:25 2026] 127.0.0.1:51863 Closing
+[Thu Feb  5 15:49:25 2026] 127.0.0.1:51864 Accepted
+[Thu Feb  5 15:49:25 2026] 127.0.0.1:51864 [200]: GET /favicon.ico
+[Thu Feb  5 15:49:25 2026] 127.0.0.1:51864 Closing
+[Thu Feb  5 15:51:52 2026] 127.0.0.1:51881 Accepted
+[Thu Feb  5 15:51:52 2026] 127.0.0.1:51882 Accepted
+[Thu Feb  5 15:51:52 2026] 127.0.0.1:51881 Closing
+[Thu Feb  5 15:51:52 2026] 127.0.0.1:51882 [200]: GET /favicon.ico
+[Thu Feb  5 15:51:52 2026] 127.0.0.1:51882 Closing
+[Thu Feb  5 15:55:29 2026] 127.0.0.1:51905 Accepted
+[Thu Feb  5 15:55:30 2026] 127.0.0.1:51905 Closing
+[Thu Feb  5 15:55:30 2026] 127.0.0.1:51907 Accepted
+[Thu Feb  5 15:55:30 2026] 127.0.0.1:51907 Closing
+[Thu Feb  5 15:56:17 2026] 127.0.0.1:51914 Accepted
+[Thu Feb  5 15:56:17 2026] 127.0.0.1:51915 Accepted
+[Thu Feb  5 15:56:17 2026] 127.0.0.1:51914 Closing
+[Thu Feb  5 15:56:17 2026] 127.0.0.1:51915 [200]: GET /favicon.ico
+[Thu Feb  5 15:56:17 2026] 127.0.0.1:51915 Closing
+[Thu Feb  5 16:01:19 2026] 127.0.0.1:51946 Accepted
+[Thu Feb  5 16:01:19 2026] 127.0.0.1:51947 Accepted
+[Thu Feb  5 16:01:19 2026] 127.0.0.1:51946 Closing
+[Thu Feb  5 16:01:19 2026] 127.0.0.1:51947 [200]: GET /favicon.ico
+[Thu Feb  5 16:01:19 2026] 127.0.0.1:51947 Closing
+[Thu Feb  5 16:03:55 2026] 127.0.0.1:51963 Accepted
+[Thu Feb  5 16:03:55 2026] 127.0.0.1:51963 Closing
+[Thu Feb  5 16:03:55 2026] 127.0.0.1:51964 Accepted
+[Thu Feb  5 16:03:55 2026] 127.0.0.1:51964 Closing
+[Thu Feb  5 16:03:58 2026] 127.0.0.1:51966 Accepted
+[Thu Feb  5 16:03:58 2026] 127.0.0.1:51966 Closing
+[Thu Feb  5 16:03:58 2026] 127.0.0.1:51967 Accepted
+[Thu Feb  5 16:03:58 2026] 127.0.0.1:51967 [200]: GET /favicon.ico
+[Thu Feb  5 16:03:58 2026] 127.0.0.1:51967 Closing
+[Thu Feb  5 16:07:09 2026] 127.0.0.1:51986 Accepted
+[Thu Feb  5 16:07:09 2026] 127.0.0.1:51986 Closing
+[Thu Feb  5 16:07:09 2026] 127.0.0.1:51987 Accepted
+[Thu Feb  5 16:07:09 2026] 127.0.0.1:51987 Closing
+[Thu Feb  5 16:07:12 2026] 127.0.0.1:51989 Accepted
+[Thu Feb  5 16:07:12 2026] 127.0.0.1:51990 Accepted
+[Thu Feb  5 16:07:12 2026] 127.0.0.1:51989 Closing
+[Thu Feb  5 16:07:12 2026] 127.0.0.1:51990 [200]: GET /favicon.ico
+[Thu Feb  5 16:07:12 2026] 127.0.0.1:51990 Closing
+[Thu Feb  5 16:12:28 2026] 127.0.0.1:52014 Accepted
+[Thu Feb  5 16:12:28 2026] 127.0.0.1:52015 Accepted
+[Thu Feb  5 16:12:28 2026] 127.0.0.1:52014 Closing
+[Thu Feb  5 16:12:28 2026] 127.0.0.1:52015 [200]: GET /favicon.ico
+[Thu Feb  5 16:12:28 2026] 127.0.0.1:52015 Closing
+[Thu Feb  5 16:16:19 2026] 127.0.0.1:52049 Accepted
+[Thu Feb  5 16:16:19 2026] 127.0.0.1:52049 Closing
+[Thu Feb  5 16:16:19 2026] 127.0.0.1:52050 Accepted
+[Thu Feb  5 16:16:19 2026] 127.0.0.1:52050 Closing
+[Thu Feb  5 16:16:21 2026] 127.0.0.1:52052 Accepted
+[Thu Feb  5 16:16:21 2026] 127.0.0.1:52053 Accepted
+[Thu Feb  5 16:16:22 2026] 127.0.0.1:52052 Closing
+[Thu Feb  5 16:16:22 2026] 127.0.0.1:52053 [200]: GET /favicon.ico
+[Thu Feb  5 16:16:22 2026] 127.0.0.1:52053 Closing
+[Thu Feb  5 16:19:04 2026] 127.0.0.1:52069 Accepted
+[Thu Feb  5 16:19:04 2026] 127.0.0.1:52069 Closing
+[Thu Feb  5 16:19:04 2026] 127.0.0.1:52070 Accepted
+[Thu Feb  5 16:19:04 2026] 127.0.0.1:52070 Closing
+[Thu Feb  5 16:19:08 2026] 127.0.0.1:52072 Accepted
+[Thu Feb  5 16:19:08 2026] 127.0.0.1:52073 Accepted
+[Thu Feb  5 16:19:09 2026] 127.0.0.1:52072 Closing
+[Thu Feb  5 16:19:09 2026] 127.0.0.1:52073 [200]: GET /favicon.ico
+[Thu Feb  5 16:19:09 2026] 127.0.0.1:52073 Closing
+[Thu Feb  5 16:21:40 2026] 127.0.0.1:52087 Accepted
+[Thu Feb  5 16:21:40 2026] 127.0.0.1:52087 Closing
+[Thu Feb  5 16:21:40 2026] 127.0.0.1:52088 Accepted
+[Thu Feb  5 16:21:41 2026] 127.0.0.1:52088 Closing
+[Thu Feb  5 16:21:45 2026] 127.0.0.1:52089 Accepted
+[Thu Feb  5 16:21:45 2026] 127.0.0.1:52090 Accepted
+[Thu Feb  5 16:21:45 2026] 127.0.0.1:52089 Closing
+[Thu Feb  5 16:21:45 2026] 127.0.0.1:52090 [200]: GET /favicon.ico
+[Thu Feb  5 16:21:45 2026] 127.0.0.1:52090 Closing
+[Thu Feb  5 16:32:28 2026] 127.0.0.1:52136 Accepted
+[Thu Feb  5 16:32:28 2026] 127.0.0.1:52136 Closing
+[Thu Feb  5 16:32:28 2026] 127.0.0.1:52137 Accepted
+[Thu Feb  5 16:32:28 2026] 127.0.0.1:52137 Closing
+[Thu Feb  5 16:33:04 2026] 127.0.0.1:52143 Accepted
+[Thu Feb  5 16:33:04 2026] 127.0.0.1:52143 Closing
+[Thu Feb  5 16:33:04 2026] 127.0.0.1:52144 Accepted
+[Thu Feb  5 16:33:04 2026] 127.0.0.1:52144 [200]: GET /favicon.ico
+[Thu Feb  5 16:33:04 2026] 127.0.0.1:52144 Closing
+[Thu Feb  5 16:35:41 2026] 127.0.0.1:52163 Accepted
+[Thu Feb  5 16:35:41 2026] 127.0.0.1:52164 Accepted
+[Thu Feb  5 16:35:41 2026] 127.0.0.1:52163 Closing
+[Thu Feb  5 16:35:41 2026] 127.0.0.1:52164 [200]: GET /favicon.ico
+[Thu Feb  5 16:35:41 2026] 127.0.0.1:52164 Closing
+[Thu Feb  5 16:37:29 2026] 127.0.0.1:52175 Accepted
+[Thu Feb  5 16:37:29 2026] 127.0.0.1:52175 Closing
+[Thu Feb  5 16:37:29 2026] 127.0.0.1:52176 Accepted
+[Thu Feb  5 16:37:29 2026] 127.0.0.1:52176 [200]: GET /favicon.ico
+[Thu Feb  5 16:37:29 2026] 127.0.0.1:52176 Closing
+[Thu Feb  5 16:41:04 2026] 127.0.0.1:52190 Accepted
+[Thu Feb  5 16:41:04 2026] 127.0.0.1:52190 Closing
+[Thu Feb  5 16:41:04 2026] 127.0.0.1:52191 Accepted
+[Thu Feb  5 16:41:04 2026] 127.0.0.1:52191 Closing
+[Thu Feb  5 16:41:06 2026] 127.0.0.1:52193 Accepted
+[Thu Feb  5 16:41:07 2026] 127.0.0.1:52193 Closing
+[Thu Feb  5 16:41:07 2026] 127.0.0.1:52194 Accepted
+[Thu Feb  5 16:41:07 2026] 127.0.0.1:52194 Closing
+[Thu Feb  5 16:43:37 2026] 127.0.0.1:52221 Accepted
+[Thu Feb  5 16:43:37 2026] 127.0.0.1:52221 Closing
+[Thu Feb  5 16:43:37 2026] 127.0.0.1:52222 Accepted
+[Thu Feb  5 16:43:37 2026] 127.0.0.1:52222 Closing
+[Thu Feb  5 16:43:41 2026] 127.0.0.1:52224 Accepted
+[Thu Feb  5 16:43:41 2026] 127.0.0.1:52225 Accepted
+[Thu Feb  5 16:43:41 2026] 127.0.0.1:52224 Closing
+[Thu Feb  5 16:43:41 2026] 127.0.0.1:52225 [200]: GET /favicon.ico
+[Thu Feb  5 16:43:41 2026] 127.0.0.1:52225 Closing
+[Thu Feb  5 16:45:23 2026] 127.0.0.1:52232 Accepted
+[Thu Feb  5 16:45:23 2026] 127.0.0.1:52232 Closing
+[Thu Feb  5 16:45:23 2026] 127.0.0.1:52233 Accepted
+[Thu Feb  5 16:45:23 2026] 127.0.0.1:52233 Closing
+[Thu Feb  5 16:45:29 2026] 127.0.0.1:52236 Accepted
+[Thu Feb  5 16:45:29 2026] 127.0.0.1:52237 Accepted
+[Thu Feb  5 16:45:29 2026] 127.0.0.1:52236 Closing
+[Thu Feb  5 16:45:29 2026] 127.0.0.1:52237 [200]: GET /favicon.ico
+[Thu Feb  5 16:45:29 2026] 127.0.0.1:52237 Closing
+^C
