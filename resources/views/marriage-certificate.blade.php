@@ -9,13 +9,25 @@
     <style>
         @media print {
             @page {
-                size: 8.5in 13in;
+                size: 8.5in 14in; /* Updated to Legal size (14in) to prevent splitting */
                 margin: 0;
             }
             body {
                 margin: 0;
                 padding: 0;
                 -webkit-print-color-adjust: exact;
+                display: block !important; /* Override flex display to prevent centering issues */
+            }
+            
+            /* Ensure container fits exactly on one page */
+            .page-container {
+                width: 8.5in !important;
+                height: 14in !important;
+                max-height: 14in !important;
+                overflow: hidden !important; /* Cut off any overflow that creates a 2nd page */
+                border: none !important;
+                box-shadow: none !important;
+                margin: 0 !important;
             }
             .no-print {
                 display: none !important;
@@ -41,7 +53,7 @@
             body.print-data-only input,
             body.print-data-only textarea {
                 visibility: visible !important;
-                color: #000 !important;
+                color: #000000ff !important;
                 background: transparent !important;
                 border: none !important;
                 /* Ensure inputs don't have borders even if they had them before */
@@ -53,223 +65,457 @@
                 color: transparent !important;
             }
 
+            /* Collapse headers in print mode */
+            body.print-data-only .header-top,
+            body.print-data-only .header-center,
+            body.print-data-only .registry-block {
+                display: none !important;
+                height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            /* Hide Labels and collapse container space for Province/City */
+            body.print-data-only .info-row {
+                height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                border: none !important;
+                overflow: visible !important; /* Allow absolute inputs to show */
+            }
+            body.print-data-only .info-label {
+                display: none !important;
+            }
+
             /* Custom Checkbox Printing - Disabled per request */
             body.print-data-only input[type="checkbox"] {
                 display: none !important;
             }
 
             /* Shift printed data upward for pre-printed forms */
-            /* Province and City */
-            .info-value {
-                transform: translateY(0cm) !important;
+            /* Province and City - ABSOLUTE POSITIONING based on User Measurements */
+            /* Top Edge -> Province: 1.10in */
+            #input-province {
+                position: absolute !important;
+                top: 1.10in !important;
+                left: 1.50in !important; /* Adjusted for label width */
+                transform: none !important;
+                width: 4.72in !important;
             }
-            .info-value.city-input {
-                transform: translate(0.5cm, 0cm) !important;
+            /* Province -> City: 0.31in (Total Top: 1.42in) */
+            #input-city {
+                position: absolute !important;
+                top: 1.34in !important;
+                left: 1.77in !important;
+                transform: none !important;
+                width: 4.72in !important;
             }
+            
             /* Main Form Data (1-14) */
-            table.main-form input {
-                transform: translateY(-0.5cm) !important;
-            }
-            /* Wife's Column (Column 3) specific shift: Right 1.9cm + Up 0.5cm (combined) */
-            table.main-form td:nth-child(3) input {
-                transform: translate(1.9cm, -0.5cm) !important;
+            /* Force the table itself to start at the correct vertical position */
+            /* User measured Table Edge to Paper Edge = 1.46in */
+            /* Adjusted Down by 0.12in per user request -> 1.57in */
+            /* We use position: absolute to FORCE this location, ignoring flow/headers */
+            
+            table.main-form {
+                position: static !important;
+                margin-top: 1.38in !important; /* Reduced from 1.57in to compensate for padding */
+                width: 100% !important;
             }
 
-            /* Section 1 (Name) Specific Shift: Down 0.3cm relative to base (-0.5cm + 0.3cm = -0.2cm) */
-            /* Husband (Col 2) */
+            body.print-data-only .bottom-section {
+                margin-top: 0.12in !important;
+                position: static !important;
+            }
+
+            /* Set height for Section 1 Row to ensure Section 2 starts 0.39in below */
+            table.main-form tbody tr:first-child {
+                height: 0.39in !important;
+            }
+
+            /* Husband (Col 2) - Reset absolute, let it flow in the table */
             table.main-form tbody tr:first-child td:nth-child(2) input {
-                transform: translateY(-0.2cm) !important;
+                position: static !important;
+                transform: none !important;
+                width: 100% !important;
             }
-            /* Wife (Col 3) - Maintain X shift of 1.9cm */
+            /* Wife (Col 3) - Reset absolute, let it flow in the table */
             table.main-form tbody tr:first-child td:nth-child(3) input {
-                transform: translate(1.9cm, -0.2cm) !important;
+                position: static !important;
+                transform: translate(0.75in, 0in) !important; /* Keep the X-shift for wife column if needed */
+                width: 100% !important;
+            }
+            
+            /* Re-enable general transform for table inputs if needed, or rely on flow */
+            /* Let's try to rely on flow + row height adjustments now */
+            
+            /* Section 1 (Name) */
+            /* If we pushed the whole table down to 1.81in, Section 1 should be close. */
+            /* Adjust Section 1 specifically if needed */
+            table.main-form tbody tr:first-child input {
+                 /* Fine tune Y if the margin-top 1.81in isn't perfect for the text baseline */
+                 transform: translateY(-0.08in) !important; 
+            }
+            
+            /* Wife (Col 3) specific X shift */
+            table.main-form td:nth-child(3) input {
+                transform: translateX(0.75in) !important;
             }
 
-            /* Section 2 (Date of Birth) Specific Shift: Up 0.3cm relative to prev (-0.2cm - 0.3cm = -0.5cm) */
+            /* Section 2 (Date of Birth) Specific Shift: 0.39in below Section 1 */
+            /* We set Row 1 height to 0.39in, so Row 2 starts at 0.39in. */
+            /* Reset Y-transform to 0 or adjust slightly */
             /* Husband (Col 2) */
             table.main-form tbody tr:nth-child(2) td:nth-child(2) input {
-                transform: translate(0.5cm, -0.5cm) !important;
+                transform: translate(0.20in, 0.0in) !important; /* Kept X, reset Y */
             }
             /* Wife (Col 3) */
+            /* User Request: Distance of wife column from husband column should be 0.39in */
+            /* Previously X-shift was 0.94in. Reducing to 0.39in to bring it closer (or align to 0.39in gap) */
             table.main-form tbody tr:nth-child(2) td:nth-child(3) input {
-                transform: translate(2.4cm, -0.5cm) !important;
+                transform: translate(0.39in, 0.0in) !important; /* Adjusted X-shift from 0.94in to 0.39in */
             }
 
-            /* Section 3 (Place of Birth) Specific Shift: Up 0.3cm (was 0.0cm -> -0.3cm) */
+            /* Set height for Section 2 Row to ensure Section 3 starts 0.31in below */
+            table.main-form tbody tr:nth-child(2) {
+                height: 0.31in !important;
+            }
+
+            /* Section 3 (Place of Birth) Specific Shift: Down 0.12in (was -0.12in -> 0.0in) */
+            /* Now handled by Row 2 Height being 0.31in */
             /* Husband (Col 2) */
             table.main-form tbody tr:nth-child(3) td:nth-child(2) input {
-                transform: translateY(-0.3cm) !important;
+                transform: translate(0.20in, 0.0in) !important;
             }
             /* Wife (Col 3) */
             table.main-form tbody tr:nth-child(3) td:nth-child(3) input {
-                transform: translate(1.9cm, -0.3cm) !important;
+                transform: translate(0.94in, 0.0in) !important;
+            }
+            /* Set height for Section 3 Row to ensure Section 4 starts 0.31in below */
+            table.main-form tbody tr:nth-child(3) {
+                height: 0.31in !important;
             }
 
-            /* Section 4 (Sex / Citizenship) Specific Shift: Up 0.3cm (was -0.2cm -> -0.5cm) */
-            /* Husband (Col 2) */
-            table.main-form tbody tr:nth-child(4) td:nth-child(2) input {
-                transform: translateY(-0.5cm) !important;
+            /* Section 4 (Sex / Citizenship) Specific Shift: 0.31in below Section 3 */
+            
+            /* Husband (Col 2) Container Override */
+            table.main-form tbody tr:nth-child(4) td:nth-child(2) div:last-child {
+                gap: 0 !important; /* Disable default gap to use precise margin */
             }
-            /* Wife (Col 3) */
-            table.main-form tbody tr:nth-child(4) td:nth-child(3) input {
-                transform: translate(1.9cm, -0.5cm) !important;
+            /* Husband (Col 2) Sex (4a) */
+            table.main-form tbody tr:nth-child(4) td:nth-child(2) input:nth-of-type(1) {
+                transform: translateY(0.0in) !important;
+                margin-right: 1.18in !important; /* Distance to Citizenship */
+                width: 0.59in !important; /* Force width to avoid wrapping or stretching */
+                flex: none !important; /* Disable flex-grow */
+            }
+            /* Husband (Col 2) Citizenship (4b) */
+            table.main-form tbody tr:nth-child(4) td:nth-child(2) input:nth-of-type(2) {
+                transform: translateY(0.0in) !important;
+                flex: 1 !important; /* Let citizenship take remaining space */
+                text-align: left !important; /* Reset alignment if needed */
             }
 
-            /* Section 5, 6, 7 Specific Shift: Up 0.5cm (was 0.5cm -> 0.0cm) */
+            /* Wife (Col 3) Container Override */
+            table.main-form tbody tr:nth-child(4) td:nth-child(3) div:last-child {
+                gap: 0 !important;
+            }
+            /* Wife (Col 3) Sex (4a) */
+            table.main-form tbody tr:nth-child(4) td:nth-child(3) input:nth-of-type(1) {
+                transform: translate(0.35in, 0.0in) !important; /* Keep the 0.35in shift for Wife col */
+                margin-right: 1.18in !important;
+                width: 0.59in !important;
+                flex: none !important;
+            }
+            /* Wife (Col 3) Citizenship (4b) */
+            table.main-form tbody tr:nth-child(4) td:nth-child(3) input:nth-of-type(2) {
+                transform: translate(0.35in, 0.0in) !important;
+                flex: 1 !important;
+                text-align: left !important;
+            }
+
+            /* Set height for Section 4 Row to ensure Section 5 starts 0.63in below */
+            table.main-form tbody tr:nth-child(4) {
+                height: 0.63in !important;
+            }
+
+            /* Section 5, 6, 7 Specific Shift: Down 0.12in (was 0.0in -> 0.12in) */
             /* Husband (Col 2) */
-            table.main-form tbody tr:nth-child(5) td:nth-child(2) input,
-            table.main-form tbody tr:nth-child(6) td:nth-child(2) input,
+            /* Section 5: Reset Y to 0.0in as we use Row Height now */
+            table.main-form tbody tr:nth-child(5) td:nth-child(2) input {
+                 transform: translateY(0.0in) !important;
+            }
+            /* Set height for Section 5 Row to ensure Section 6 starts 0.20in below */
+            table.main-form tbody tr:nth-child(5) {
+                height: 0.20in !important;
+            }
+
+            /* Section 6, 7 Specific Shift: Down 0.12in (was 0.0in -> 0.12in) */
+            /* Husband (Col 2) */
+            /* Section 6: Reset Y to 0.0in as we use Row Height now */
+            table.main-form tbody tr:nth-child(6) td:nth-child(2) input {
+                 transform: translateY(0.0in) !important;
+            }
+            /* Set height for Section 6 Row to ensure Section 7 starts 0.31in below */
+            table.main-form tbody tr:nth-child(6) {
+                height: 0.31in !important;
+            }
+
+            /* Section 7 */
             table.main-form tbody tr:nth-child(7) td:nth-child(2) input {
-                transform: translateY(0.0cm) !important;
+                transform: translateY(0.0in) !important;
             }
-            /* Wife (Col 3) */
-            table.main-form tbody tr:nth-child(5) td:nth-child(3) input,
-            table.main-form tbody tr:nth-child(6) td:nth-child(3) input,
-            table.main-form tbody tr:nth-child(7) td:nth-child(3) input {
-                transform: translate(1.9cm, 0.0cm) !important;
+            /* Set height for Section 7 Row to ensure Section 8 starts 0.20in below */
+            table.main-form tbody tr:nth-child(7) {
+                height: 0.20in !important;
             }
 
-            /* Section 8 Specific Shift: Up 0.5cm (was 0.5cm -> 0.0cm) */
+            /* Wife (Col 3) */
+            /* Section 5: Reset Y to 0.0in, keep X shift (maybe 0.35in? or 0.75in?) */
+            /* User previously set Wife X to 0.35in for Sec 4, and 0.39in for Sec 2. */
+            /* Let's keep 0.75in for now unless specified, but reset Y */
+            table.main-form tbody tr:nth-child(5) td:nth-child(3) input {
+                transform: translate(0.75in, 0.0in) !important;
+            }
+            /* Section 6, 7 */
+            /* Section 6: Reset Y to 0.0in, keep X */
+            table.main-form tbody tr:nth-child(6) td:nth-child(3) input {
+                transform: translate(0.75in, 0.0in) !important;
+            }
+            /* Section 7 */
+            table.main-form tbody tr:nth-child(7) td:nth-child(3) input {
+                transform: translate(0.75in, 0.0in) !important;
+            }
+
+            /* Section 8 Specific Shift: Down 0.12in (was 0.0in -> 0.12in) */
             /* Husband (Col 2) */
             table.main-form tbody tr:nth-child(8) td:nth-child(2) input {
-                transform: translateY(0.0cm) !important;
+                transform: translateY(0.0in) !important;
             }
-            /* Section 9 Specific Shift: Up 0.5cm (was 0.8cm -> 0.3cm) */
-            /* Husband (Col 2) */
-            table.main-form tbody tr:nth-child(9) td:nth-child(2) input {
-                transform: translateY(0.3cm) !important;
+            /* Set height for Section 8 Row to ensure Section 9 starts 0.20in below */
+            table.main-form tbody tr:nth-child(8) {
+                height: 0.20in !important;
             }
 
-            /* Section 10 Husband (Col 2): Up 1.0cm (was 1.1cm -> 0.1cm) */
+            /* Section 9 Specific Shift: Down 0.12in (was 0.12in -> 0.24in) */
+            /* Husband (Col 2) */
+            table.main-form tbody tr:nth-child(9) td:nth-child(2) input {
+                transform: translateY(0.0in) !important;
+            }
+            /* Set height for Section 9 Row to ensure Section 10 starts 0.28in below */
+            table.main-form tbody tr:nth-child(9) {
+                height: 0.28in !important;
+            }
+
+            /* Section 10 Husband (Col 2): Down 0.12in (was 0.04in -> 0.16in) */
             table.main-form tbody tr:nth-child(10) td:nth-child(2) input {
-                transform: translateY(0.1cm) !important;
+                transform: translateY(0.0in) !important;
             }
 
             /* Wife (Col 3) */
             /* Section 8 */
             table.main-form tbody tr:nth-child(8) td:nth-child(3) input {
-                transform: translate(1.9cm, 0.0cm) !important;
+                transform: translate(0.75in, 0.0in) !important;
             }
             /* Section 9 */
             table.main-form tbody tr:nth-child(9) td:nth-child(3) input {
-                transform: translate(1.9cm, 0.3cm) !important;
+                transform: translate(0.75in, 0.0in) !important;
             }
-            /* Section 10 Wife (Col 3): Up 1.0cm (was 1.1cm -> 0.1cm) */
+            /* Section 10 Wife (Col 3): Down 0.12in (was 0.04in -> 0.16in) */
             table.main-form tbody tr:nth-child(10) td:nth-child(3) input {
-                transform: translate(1.9cm, 0.1cm) !important;
+                transform: translate(0.75in, 0.0in) !important;
+            }
+            /* Set height for Section 10 Row to ensure Section 11 starts 0.20in below */
+            table.main-form tbody tr:nth-child(10) {
+                height: 0.20in !important;
             }
 
-            /* Section 11 Specific Shift: Up 1.0cm (was 1.4cm -> 0.4cm) */
+            /* Section 11 Specific Shift: Down 0.12in (was 0.16in -> 0.28in) */
             /* Husband (Col 2) */
             table.main-form tbody tr:nth-child(11) td:nth-child(2) input {
-                transform: translateY(0.4cm) !important;
+                transform: translateY(0.0in) !important;
             }
             /* Wife (Col 3) */
             table.main-form tbody tr:nth-child(11) td:nth-child(3) input {
-                transform: translate(1.9cm, 0.4cm) !important;
+                transform: translate(0.75in, 0.0in) !important;
+            }
+            /* Set height for Section 11 Row to ensure Section 12 starts 0.31in below */
+            table.main-form tbody tr:nth-child(11) {
+                height: 0.31in !important;
             }
 
-            /* Section 12, 13, 14 Specific Shift: Up 1.0cm (was 1.5cm -> 0.5cm) */
+            /* Section 12, 13, 14 Specific Shift: Down 0.12in (was 0.20in -> 0.31in) */
             /* Husband (Col 2) */
             table.main-form tbody tr:nth-child(12) td:nth-child(2) input,
             table.main-form tbody tr:nth-child(13) td:nth-child(2) input,
             table.main-form tbody tr:nth-child(14) td:nth-child(2) input {
-                transform: translateY(0.5cm) !important;
+                transform: translateY(0.0in) !important;
             }
             /* Wife (Col 3) */
             table.main-form tbody tr:nth-child(12) td:nth-child(3) input,
             table.main-form tbody tr:nth-child(13) td:nth-child(3) input,
             table.main-form tbody tr:nth-child(14) td:nth-child(3) input {
-                transform: translate(1.9cm, 0.5cm) !important;
+                transform: translate(0.75in, 0.0in) !important;
             }
 
-            /* Age Input Specific Shifts (Right 0.5cm relative to column base) */
-            /* Husband Age (Col 2): Up 0.3cm (was -0.5cm -> -0.8cm) */
+            /* Set height for Section 12 Row to ensure Section 13 starts 0.20in below */
+            table.main-form tbody tr:nth-child(12) {
+                height: 0.20in !important;
+            }
+
+            /* Set height for Section 13 Row to ensure Section 14 starts 0.31in below */
+            table.main-form tbody tr:nth-child(13) {
+                height: 0.31in !important;
+            }
+
+            /* Age Input Specific Shifts (Right 0.20in relative to column base) */
+            /* Husband Age (Col 2): Down 0.12in (was -0.31in -> -0.20in) */
             table.main-form td:nth-child(2) input.age-input {
-                transform: translate(0.8cm, -0.8cm) !important;
+                transform: translate(0.31in, -0.20in) !important;
             }
-            /* Wife Age (Col 3): Up 0.3cm (was -0.5cm -> -0.8cm) */
+            /* Wife Age (Col 3): Down 0.12in (was -0.31in -> -0.20in) */
             table.main-form td:nth-child(3) input.age-input {
-                transform: translate(2.7cm, -0.8cm) !important;
+                transform: translate(0.51in, -0.20in) !important;
             }
 
-            /* Item 15 (Place of Marriage): Up 1.0cm (was 1.5cm -> 0.5cm), Right 0.5cm */
+            /* Item 15 (Place of Marriage): Right 0.20in, Y aligned via section margin */
             .item-15-row input {
-                transform: translate(0.5cm, 0.5cm) !important;
+                transform: translate(0.20in, 0.0in) !important;
             }
 
-            /* Item 16 (Date of Marriage): Down 0.1cm (0.4cm -> 0.5cm) */
+            /* Section 16 & 17 Container: 0.31in below Section 15 */
+            .bottom-section > div:nth-child(2) {
+                margin-top: 0.31in !important;
+            }
+
+            /* Item 16 (Date of Marriage): Reset Y */
             .item-16-input {
-                transform: translateY(0.5cm) !important;
+                transform: translateY(0.0in) !important;
             }
 
-            /* Item 17 (Time of Marriage): Right 1.9cm, Up 1.0cm (was 1.2cm -> 0.2cm) */
+            /* Item 17 (Time of Marriage): Right 0.75in, Reset Y */
             .item-17-input {
-                transform: translate(1.9cm, 0.2cm) !important;
+                transform: translate(0.75in, 0.0in) !important;
+            }
+
+            /* Section 18 (Certification): 0.39in below Section 16/17 */
+            .certification-text {
+                margin-top: 0.39in !important;
+                position: relative !important;
             }
 
             /* Item 18 (Certification of Contracting Parties) */
-            /* First Input: Up 0.9cm (2.0 - 0.9 = 1.1cm), Right 1.5cm (-0.2 + 1.5 = 1.3cm) */
-            /* Item 18 First Input: Right 2.3cm (was 2.2cm), Up 1.0cm (was 1.3cm -> 0.3cm) */
+            /* First Input: Absolute Position for precision */
             .item-18-input-1 {
-                transform: translate(2.3cm, 0.3cm) !important;
+                position: absolute !important;
+                top: 0 !important;
+                left: 1.97in !important; /* Adjusted to align with blank after 'That I,' */
+                transform: none !important;
             }
-            /* Item 18 Second Input: Right 2.3cm (was 2.2cm), Up 1.0cm (was 1.3cm -> 0.3cm) */
+            /* Item 18 Second Input: Absolute Position for precision */
             .item-18-input-2 {
-                transform: translate(2.3cm, 0.3cm) !important;
+                position: absolute !important;
+                top: 0 !important;
+                left: 4.72in !important; /* Adjusted to align with blank after 'and I,' */
+                transform: none !important;
             }
 
-            /* Item 18 (Day of Month): Down 0.1cm (-0.1cm -> 0.0cm), Right 0.2cm */
+            /* Item 18 (Day of Month): Aligned with Month, 0.31in below Names (approx 0.59in from top) */
             .day-input {
-                transform: translate(0.2cm, 0.0cm) !important;
+                position: absolute !important;
+                top: 0.59in !important;
+                left: 4.72in !important; /* Adjusted left position */
+                transform: none !important;
             }
 
-            /* Item 18 (Month of Year): Up 1.0cm (was 0.5cm -> -0.5cm), Right 18.0cm */
+            /* Item 18 (Month of Year): Aligned with Day */
             .month-input {
-                transform: translate(18.0cm, -0.5cm) !important;
+                position: absolute !important;
+                top: 0.59in !important;
+                left: 5.91in !important; /* Adjusted left position */
+                transform: none !important;
             }
 
-            /* Item 18 Checkboxes: Down 1.3cm (was 1.0cm), Left 0.9cm */
-            .item-18-checkbox {
-                transform: translate(-0.9cm, 1.3cm) !important;
+            /* Section 19 Container: Positioned relative to Section 18 inputs */
+            /* User wants 1.10in from Sec 18 Day/Month to Sec 19a inputs */
+            /* Sec 18 Day/Month are at top: 0.59in. So Sec 19a needs to be at approx 0.59in + 1.10in = 1.69in relative to Sec 18 container top */
+            /* Or we can just push the Sec 19 container down */
+            /* Let's target the Section 19 text container */
+            
+            .certification-text + .signatures-row + .certification-text {
+                margin-top: 1.10in !important; 
             }
-            /* Item 19a (Marriage License): Up 1.0cm (was 0.3cm -> -1.0cm), Right 2.9cm */
+            
+            /* And reset internal spacing for Section 19a row if needed, or let it flow */
             .item-19a-row {
-                transform: translate(2.9cm, -1.0cm) !important;
-            }
-            /* Item 19a Checkbox Specific: Left 2.7cm (was 2.4cm) relative to row, Down 0.2cm (was Up 0.2cm) */
-            .item-19a-row input[type="checkbox"] {
-                transform: translate(-2.7cm, 0.0cm) !important;
+                 margin-top: 0 !important;
             }
 
-            /* Item 19 (Solemnizing Officer): Up 1.1cm (was 0.1cm -> -1.1cm), Right 1.5cm */
+            /* Item 18 Checkboxes: Down 0.12in (was 0.51in -> 0.63in), Left 0.35in */
+            .item-18-checkbox {
+                transform: translate(-0.35in, 0.63in) !important;
+            }
+            /* Item 19a (Marriage License): Down 0.12in (was -0.39in -> -0.28in), Right 1.14in */
+            .item-19a-row {
+                transform: translate(1.14in, -0.28in) !important;
+            }
+            /* Item 19a Checkbox Specific: Left 1.06in (was 0.94in) relative to row, Down 0.08in (was Up 0.08in) */
+            .item-19a-row input[type="checkbox"] {
+                transform: translate(-1.06in, 0.0in) !important;
+            }
+
+            /* Solemnizing Officer Container: Fixed position below Section 19a */
+            .solemnizing-officer-row {
+                position: absolute !important;
+                top: 10.40in !important;
+                left: 0 !important;
+                width: 100% !important;
+                margin-top: 0 !important;
+            }
+
+            /* Witnesses Section (20a): Fixed position 0.7in below Section 19a data */
+            .witnesses-section {
+                position: absolute !important;
+                top: 10.90in !important;
+                left: 0 !important;
+                width: 100% !important;
+                margin-top: 0 !important;
+            }
+
+            /* Item 19 (Solemnizing Officer): Horizontal shift only */
             .solemnizing-officer,
             .position-designation,
             .religion-designation {
-                transform: translate(1.5cm, -1.1cm) !important;
+                transform: translate(0.59in, 0in) !important;
             }
 
-            /* Item 20a (Witnesses): Up 1.0cm (was 0.6cm -> -1.6cm), Right 1.0cm, Side Padding 0.1cm */
+            /* Item 20a (Witnesses): Horizontal shift only */
             .item-20a-grid input {
-                transform: translate(1.0cm, -1.6cm) !important;
-                padding: 0 0.1cm !important;
+                transform: translate(0.39in, 0in) !important;
+                padding: 0 0.04in !important;
             }
 
-            /* Section 21 & 22 (Received By & Registered At) AND Barcode Strip: Up 5.0cm (via margin), Right 0.4cm */
+            /* Section 21 & 22 (Footer): Fixed position 0.7in below Witness data */
             .footer-grid {
-                margin-top: -5.0cm !important;
+                position: absolute !important;
+                top: 12.0in !important;
+                left: 0 !important;
+                width: 100% !important;
+                margin-top: 0 !important;
             }
-            /* Section 21 Specific (Received By): Right 1.3cm, Up 1.0cm (was 4.2cm -> 3.2cm) */
+            /* Section 21 Specific: Horizontal shift only */
             .footer-grid .footer-half:first-child input {
-                transform: translate(1.3cm, 3.2cm) !important;
+                transform: translate(0.51in, 0in) !important;
+                visibility: visible !important;
             }
-            /* Section 22 Specific (Registered At): Right 1.9cm (was 1.7cm), Up 1.0cm (was 4.1cm -> 3.1cm) */
+            /* Section 22 Specific: Horizontal shift only */
             .footer-grid .footer-half:nth-child(2) input {
-                transform: translate(1.9cm, 3.1cm) !important;
+                transform: translate(0.75in, 0in) !important;
+                visibility: visible !important;
             }
-            /* Barcode Strip: Right 0.4cm, Down 8.0cm */
+            /* Barcode Strip: Right 0.16in, Down 0.12in (was 3.15in -> 3.27in) */
             .barcode-strip input {
-                transform: translate(0.4cm, 8.0cm) !important;
+                transform: translate(0.16in, 3.27in) !important;
             }
         }
 
@@ -345,7 +591,7 @@
             text-align: center;
             line-height: 1.2;
             margin-top: 0;
-            margin-left: -4.5mm; /* Center relative to paper (compensate for asymmetric padding) */
+            margin-left: -0.18in; /* Center relative to paper (compensate for asymmetric padding) */
         }
         .header-center h4 { margin: 0; font-weight: normal; font-size: 10pt; }
         .header-center h2 { margin: 0; font-size: 18pt; font-weight: bold; font-family: "Arial Black", Arial, sans-serif; letter-spacing: 1px; }
@@ -571,7 +817,7 @@
             <div style="font-size: 0.8em; color: #666; margin-left: 20px;">For pre-printed forms</div>
         </label>
 
-        <div style="display: none;">
+        <div id="advanced-controls" style="display: block;">
         <hr style="margin: 10px 0; border: 0; border-top: 1px solid #ddd;">
         
         <strong>Paper Size:</strong>
@@ -630,11 +876,11 @@
 
     <div class="info-row">
         <span class="info-label">Province</span>
-        <input type="text" class="info-value" value="CEBU">
+        <input type="text" id="input-province" class="info-value" value="" placeholder="Enter Province">
     </div>
     <div class="info-row">
         <span class="info-label">City/Municipality</span>
-        <input type="text" class="info-value city-input" value="ARGAO">
+        <input type="text" id="input-city" class="info-value city-input" value="" placeholder="Enter City/Municipality">
     </div>
 
     <table class="main-form">
@@ -652,29 +898,29 @@
                 <td>
                     <div style="display: flex; margin-bottom: 2px;">
                         <span class="field-sublabel" style="width: 40px;">(First)</span>
-                        <input type="text" style="flex:1" value="AIRO NIKKO">
+                        <input type="text" style="flex:1" value="" placeholder="Enter Husband's First Name">
                     </div>
                     <div style="display: flex; margin-bottom: 2px;">
                         <span class="field-sublabel" style="width: 40px;">(Middle)</span>
-                        <input type="text" style="flex:1" value="BUENO">
+                        <input type="text" style="flex:1" value="" placeholder="Enter Husband's Middle Name">
                     </div>
                     <div style="display: flex;">
                         <span class="field-sublabel" style="width: 40px;">(Last)</span>
-                        <input type="text" style="flex:1" value="SOLPICO">
+                        <input type="text" style="flex:1" value="" placeholder="Enter Husband's Last Name">
                     </div>
                 </td>
                 <td>
                     <div style="display: flex; margin-bottom: 2px;">
                         <span class="field-sublabel" style="width: 40px;">(First)</span>
-                        <input type="text" style="flex:1" value="KRISTIN JUCEL">
+                        <input type="text" style="flex:1" value="" placeholder="Enter Wife's First Name">
                     </div>
                     <div style="display: flex; margin-bottom: 2px;">
                         <span class="field-sublabel" style="width: 40px;">(Middle)</span>
-                        <input type="text" style="flex:1" value="BUCOG">
+                        <input type="text" style="flex:1" value="" placeholder="Enter Wife's Middle Name">
                     </div>
                     <div style="display: flex;">
                         <span class="field-sublabel" style="width: 40px;">(Last)</span>
-                        <input type="text" style="flex:1" value="TAMAYO">
+                        <input type="text" style="flex:1" value="" placeholder="Enter Wife's Last Name">
                     </div>
                 </td>
             </tr>
@@ -683,18 +929,18 @@
                 <td>2a. Date of Birth<br>2b. Age</td>
                 <td>
                     <div style="display: flex; gap: 5px; text-align: center;">
-                        <div style="flex:1"><span class="field-sublabel">(Day)</span><br><input type="text" value="13" style="text-align:center"></div>
-                        <div style="flex:2"><span class="field-sublabel">(Month)</span><br><input type="text" value="NOVEMBER" style="text-align:center"></div>
-                        <div style="flex:1"><span class="field-sublabel">(Year)</span><br><input type="text" value="1992" style="text-align:center"></div>
-                        <div style="flex:1"><span class="field-sublabel">(Age)</span><br><input type="text" class="age-input" value="30" style="text-align:center"></div>
+                        <div style="flex:1"><span class="field-sublabel">(Day)</span><br><input type="text" value="" placeholder="Day" style="text-align:center"></div>
+                        <div style="flex:2"><span class="field-sublabel">(Month)</span><br><input type="text" value="" placeholder="Month" style="text-align:center"></div>
+                        <div style="flex:1"><span class="field-sublabel">(Year)</span><br><input type="text" value="" placeholder="Year" style="text-align:center"></div>
+                        <div style="flex:1"><span class="field-sublabel">(Age)</span><br><input type="text" class="age-input" value="" placeholder="Age" style="text-align:center"></div>
                     </div>
                 </td>
                 <td>
                     <div style="display: flex; gap: 5px; text-align: center;">
-                        <div style="flex:1"><span class="field-sublabel">(Day)</span><br><input type="text" value="24" style="text-align:center"></div>
-                        <div style="flex:2"><span class="field-sublabel">(Month)</span><br><input type="text" value="OCTOBER" style="text-align:center"></div>
-                        <div style="flex:1"><span class="field-sublabel">(Year)</span><br><input type="text" value="1998" style="text-align:center"></div>
-                        <div style="flex:1"><span class="field-sublabel">(Age)</span><br><input type="text" class="age-input" value="24" style="text-align:center"></div>
+                        <div style="flex:1"><span class="field-sublabel">(Day)</span><br><input type="text" value="" placeholder="Day" style="text-align:center"></div>
+                        <div style="flex:2"><span class="field-sublabel">(Month)</span><br><input type="text" value="" placeholder="Month" style="text-align:center"></div>
+                        <div style="flex:1"><span class="field-sublabel">(Year)</span><br><input type="text" value="" placeholder="Year" style="text-align:center"></div>
+                        <div style="flex:1"><span class="field-sublabel">(Age)</span><br><input type="text" class="age-input" value="" placeholder="Age" style="text-align:center"></div>
                     </div>
                 </td>
             </tr>
@@ -705,13 +951,13 @@
                     <div style="display:flex; justify-content:space-between; font-size:7pt; color:#444;">
                         <span>(City/Municipality)</span><span>(Province)</span><span>(Country)</span>
                     </div>
-                    <input type="text" class="auto-resize" value="QUEZON CITY, METRO MANILA, PHILIPPINES">
+                    <input type="text" class="auto-resize" value="" placeholder="Enter Husband's Place of Birth">
                 </td>
                 <td>
                     <div style="display:flex; justify-content:space-between; font-size:7pt; color:#444;">
                         <span>(City/Municipality)</span><span>(Province)</span><span>(Country)</span>
                     </div>
-                    <input type="text" class="auto-resize" value="CEBU CITY, CEBU, PHILIPPINES">
+                    <input type="text" class="auto-resize" value="" placeholder="Enter Wife's Place of Birth">
                 </td>
             </tr>
             <!-- 4. Sex / Citizenship -->
@@ -722,8 +968,8 @@
                         <span class="field-sublabel" style="white-space: nowrap;">(Citizenship)</span>
                     </div>
                     <div style="display: flex; gap: 10px; align-items: center;">
-                        <input type="text" value="MALE" style="flex: 1; text-align: left;">
-                        <input type="text" value="FILIPINO" style="flex: 1; text-align: right;">
+                        <input type="text" value="" placeholder="Sex" style="flex: 1; text-align: left;">
+                        <input type="text" value="" placeholder="Citizenship" style="flex: 1; text-align: right;">
                     </div>
                 </td>
                 <td>
@@ -731,8 +977,8 @@
                         <span class="field-sublabel" style="white-space: nowrap;">(Citizenship)</span>
                     </div>
                     <div style="display: flex; gap: 10px; align-items: center;">
-                        <input type="text" value="FEMALE" style="flex: 1; text-align: left;">
-                        <input type="text" value="FILIPINO" style="flex: 1; text-align: right;">
+                        <input type="text" value="" placeholder="Sex" style="flex: 1; text-align: left;">
+                        <input type="text" value="" placeholder="Citizenship" style="flex: 1; text-align: right;">
                     </div>
                 </td>
             </tr>
@@ -741,107 +987,101 @@
                 <td>5. Residence</td>
                 <td>
                     <div style="text-align: right; font-size: 7pt; color:#444;">(House No., St., Barangay, City/Municipality, Province, Country)</div>
-                    <input type="text" class="auto-resize" value="LOOC, LAPU-LAPU CITY, CEBU, PHILIPPINES">
+                    <input type="text" class="auto-resize" value="" placeholder="Enter Husband's Residence"`>
                 </td>
                 <td>
                     <div style="text-align: right; font-size: 7pt; color:#444;">(House No., St., Barangay, City/Municipality, Province, Country)</div>
-                    <input type="text" class="auto-resize" value="CANDABONG, BINLOD, ARGAO, CEBU, PHILIPPINES">
+                    <input type="text" class="auto-resize" value="" placeholder="Enter Wife's Residence">
                 </td>
             </tr>
             <!-- 6. Religion -->
             <tr>
                 <td>6. Religion/Religious Sect</td>
-                <td><input type="text" value="CHRISTIAN"></td>
-                <td><input type="text" value="ROMAN CATHOLIC"></td>
+                <td><input type="text" value="" placeholder="Enter Husband's Religion"></td>
+                <td><input type="text" value="" placeholder="Enter Wife's Religion"></td>
             </tr>
             <!-- 7. Civil Status -->
             <tr>
                 <td>7. Civil Status</td>
-                <td><input type="text" value="SINGLE"></td>
-                <td><input type="text" value="SINGLE"></td>
+                <td><input type="text" value="" placeholder="Enter Husband's Civil Status"></td>
+                <td><input type="text" value="" placeholder="Enter Wife's Civil Status"></td>
             </tr>
             <!-- 8. Name of Father -->
             <tr>
                 <td>8. Name of Father</td>
                 <td>
-                    <div style="display: flex; text-align: center; gap: 5px;">
-                        <div style="flex:1"><span class="field-sublabel">(First)</span><br><input type="text" value="AIRO"></div>
-                        <div style="flex:1"><span class="field-sublabel">(Middle)</span><br><input type="text" value="CANLAS"></div>
-                        <div style="flex:1"><span class="field-sublabel">(Last)</span><br><input type="text" value="SOLPICO"></div>
+                    <div style="text-align: center;">
+                        <span class="field-sublabel">(First, Middle, Last)</span><br>
+                        <input type="text" value="" placeholder="Enter Husband's Father's Full Name">
                     </div>
                 </td>
                 <td>
-                    <div style="display: flex; text-align: center; gap: 5px;">
-                        <div style="flex:1"><span class="field-sublabel">(First)</span><br><input type="text" value="ALBERTO"></div>
-                        <div style="flex:1"><span class="field-sublabel">(Middle)</span><br><input type="text" value="DURIG"></div>
-                        <div style="flex:1"><span class="field-sublabel">(Last)</span><br><input type="text" value="TAMAYO JR"></div>
+                    <div style="text-align: center;">
+                        <span class="field-sublabel">(First, Middle, Last)</span><br>
+                        <input type="text" value="" placeholder="Enter Wife's Father's Full Name">
                     </div>
                 </td>
             </tr>
             <!-- 9. Citizenship Father -->
             <tr>
                 <td>9. Citizenship</td>
-                <td><input type="text" value="FILIPINO"></td>
-                <td><input type="text" value="FILIPINO"></td>
+                <td><input type="text" value="" placeholder="Enter Husband's Father's Citizenship"></td>
+                <td><input type="text" value="" placeholder="Enter Wife's Father's Citizenship"></td>
             </tr>
             <!-- 10. Name of Mother -->
             <tr>
                 <td>10. Maiden Name of Mother</td>
                 <td>
-                    <div style="display: flex; text-align: center; gap: 5px;">
-                        <div style="flex:1"><span class="field-sublabel">(First)</span><br><input type="text" value="LILIAN"></div>
-                        <div style="flex:1"><span class="field-sublabel">(Middle)</span><br><input type="text" value="MERINDO"></div>
-                        <div style="flex:1"><span class="field-sublabel">(Last)</span><br><input type="text" value="BUENO"></div>
+                    <div style="text-align: center;">
+                        <span class="field-sublabel">(First, Middle, Last)</span><br>
+                        <input type="text" value="" placeholder="Enter Husband's Mother's Full Name">
                     </div>
                 </td>
                 <td>
-                    <div style="display: flex; text-align: center; gap: 5px;">
-                        <div style="flex:1"><span class="field-sublabel">(First)</span><br><input type="text" value="VIVIAN"></div>
-                        <div style="flex:1"><span class="field-sublabel">(Middle)</span><br><input type="text" value="RAFAELA"></div>
-                        <div style="flex:1"><span class="field-sublabel">(Last)</span><br><input type="text" value="BUCOG"></div>
+                    <div style="text-align: center;">
+                        <span class="field-sublabel">(First, Middle, Last)</span><br>
+                        <input type="text" value="" placeholder="Enter Wife's Mother's Full Name">
                     </div>
                 </td>
             </tr>
             <!-- 11. Citizenship Mother -->
             <tr>
                 <td>11. Citizenship</td>
-                <td><input type="text" value="FILIPINO"></td>
-                <td><input type="text" value="FILIPINO"></td>
+                <td><input type="text" value="" placeholder="Enter Husband's Mother's Citizenship"></td>
+                <td><input type="text" value="" placeholder="Enter Wife's Mother's Citizenship"></td>
             </tr>
             <!-- 12. Consent Person -->
             <tr>
                 <td>12. Name of Person/Who Gave Consent or Advice</td>
                 <td>
-                    <div style="display: flex; text-align: center; gap: 5px;">
-                        <div style="flex:1"><span class="field-sublabel ">(First)</span><br><input type="text" class="auto-resize" value="NOT APPLICABLE"></div>
-                        <div style="flex:1"><span class="field-sublabel">(Middle)</span><br><input type="text" class="auto-resize"></div>
-                        <div style="flex:1"><span class="field-sublabel">(Last)</span><br><input type="text" class="auto-resize"></div>
+                    <div style="text-align: center;">
+                        <span class="field-sublabel">(First, Middle, Last)</span><br>
+                        <input type="text" class="auto-resize" value="" placeholder="Enter Husband's Consent Person's Full Name">
                     </div>
                 </td>
                 <td>
-                    <div style="display: flex; text-align: center; gap: 5px;">
-                        <div style="flex:1"><span class="field-sublabel">(First)</span><br><input type="text" value="VIVIAN"></div>
-                        <div style="flex:1"><span class="field-sublabel">(Middle)</span><br><input type="text" value="BUCOG"></div>
-                        <div style="flex:1"><span class="field-sublabel">(Last)</span><br><input type="text" value="TAMAYO"></div>
+                    <div style="text-align: center;">
+                        <span class="field-sublabel">(First, Middle, Last)</span><br>
+                        <input type="text" class="auto-resize" value="" placeholder="Enter Wife's Consent Person's Full Name">
                     </div>
                 </td>
             </tr>
             <!-- 13. Relationship -->
             <tr>
                 <td>13. Relationship</td>
-                <td><input type="text" value="NOT APPLICABLE"></td>
-                <td><input type="text" value="MOTHER"></td>
+                <td><input type="text" value="" placeholder="Enter Husband's Relationship"></td>
+                <td><input type="text" value="" placeholder="Enter Wife's Relationship"></td>
             </tr>
             <!-- 14. Residence -->
             <tr>
                 <td>14. Residence</td>
                 <td>
                     <div style="text-align: right; font-size: 7pt; color:#444;">(House No., St., Barangay, City/Municipality, Province, Country)</div>
-                    <input type="text" class="auto-resize" value="NOT APPLICABLE">
+                    <input type="text" class="auto-resize" value="" placeholder="Enter Residence">
                 </td>
                 <td>
                     <div style="text-align: right; font-size: 7pt; color:#444;">(House No., St., Barangay, City/Municipality, Province, Country)</div>
-                    <input type="text" class="auto-resize" value="CANDABONG, BINLOD, ARGAO, CEBU, PHILIPPINES">
+                    <input type="text" class="auto-resize" value="" placeholder="Enter Residence">
                 </td>
             </tr>
         </tbody>
@@ -851,15 +1091,15 @@
         <div class="item-15-row" style="display: flex; border-bottom: 1px dotted #ccc; padding-bottom: 5px; margin-bottom: 5px;">
             <div style="width: 150px;">15. Place of Marriage:</div>
             <div style="flex: 1;">
-                <input type="text" class="auto-resize" value="OFFICE OF THE MUNICIPAL MAYOR" style="font-weight: bold; width: 100%; border-bottom: 1px solid black;">
+                <input type="text" class="auto-resize" value="" placeholder="Place of Marriage" style="font-weight: bold; width: 100%; border-bottom: 1px solid black;">
                 <div style="font-size: 7pt; text-align: center;">(Office of the/House of/Barangay of/Church of/Mosque of)</div>
             </div>
             <div style="flex: 1; margin-left: 10px;">
-                <input type="text" value="ARGAO" style="font-weight: bold; text-align: center; width: 100%; border-bottom: 1px solid black;">
+                <input type="text" class="auto-resize" value="" placeholder="Enter City/Municipality" style="font-weight: bold; text-align: center; width: 100%; border-bottom: 1px solid black;">
                 <div style="font-size: 7pt; text-align: center;">(City/Municipality)</div>
             </div>
             <div style="flex: 1; margin-left: 10px;">
-                <input type="text" value="CEBU" style="font-weight: bold; text-align: center; width: 100%; border-bottom: 1px solid black;">
+                <input type="text" class="auto-resize" value="" placeholder="Enter Province" style="font-weight: bold; text-align: center; width: 100%; border-bottom: 1px solid black;">
                 <div style="font-size: 7pt; text-align: center;">(Province)</div>
             </div>
         </div>
@@ -867,21 +1107,21 @@
         <div style="display: flex; margin-bottom: 5px;">
             <div style="width: 150px;">16. Date of Marriage:</div>
             <div style="flex: 1; display: flex; gap: 10px;">
-                <div style="text-align: center;"><input type="text" class="item-16-input" value="05" style="width: 40px; text-align: center;"><br><span class="field-sublabel">(Day)</span></div>
-                <div style="text-align: center;"><input type="text" class="item-16-input" value="JANUARY" style="width: 100px; text-align: center;"><br><span class="field-sublabel">(Month)</span></div>
-                <div style="text-align: center;"><input type="text" class="item-16-input" value="2023" style="width: 60px; text-align: center;"><br><span class="field-sublabel">(Year)</span></div>
+                <div style="text-align: center;"><input type="text" class="item-16-input" value="" placeholder="Day" style="width: 40px; text-align: center;"><br><span class="field-sublabel">(Day)</span></div>
+                <div style="text-align: center;"><input type="text" class="item-16-input" value="" placeholder="Month" style="width: 100px; text-align: center;"><br><span class="field-sublabel">(Month)</span></div>
+                <div style="text-align: center;"><input type="text" class="item-16-input" value="" placeholder="Year" style="width: 60px; text-align: center;"><br><span class="field-sublabel">(Year)</span></div>
             </div>
             <div style="width: 300px; display: flex;">
                 17. Time of Marriage: 
-                <input type="text" class="item-17-input" value="08:00 AM" style="flex: 1; text-align: center; border-bottom: 1px solid black; margin: 0 5px;"> am/pm
+                <input type="text" class="item-17-input" value="" placeholder="Time" style="flex: 1; text-align: center; border-bottom: 1px solid black; margin: 0 5px;"> am/pm
             </div>
         </div>
 
         <div class="certification-text">
             18. CERTIFICATION OF THE CONTRACTING PARTIES:<br>
-            THIS IS TO CERTIFY: That I, <input type="text" class="item-18-input-1" value="AIRO NIKKO BUENO SOLPICO" style="width: 250px; border-bottom: 1px solid black;"> and I, <input type="text" class="item-18-input-2" value="KRISTIN JUCEL BUCOG TAMAYO" style="width: 250px; border-bottom: 1px solid black;">, both of legal age, of our own free will and accord, and in the presence of the person solemnizing this marriage and of the witnesses named below, take each other as husband and wife and certifying further that we: <input type="checkbox" class="item-18-checkbox"> have entered, a copy of which is hereto attached / <input type="checkbox" checked class="item-18-checkbox"> have not entered into a marriage settlement.
+            THIS IS TO CERTIFY: That I, <input type="text" class="item-18-input-1" value="" placeholder="Name of Husband" style="width: 250px; border-bottom: 1px solid black;"> and I, <input type="text" class="item-18-input-2" value="" placeholder="name of wife" style="width: 250px; border-bottom: 1px solid black;">, both of legal age, of our own free will and accord, and in the presence of the person solemnizing this marriage and of the witnesses named below, take each other as husband and wife and certifying further that we: <input type="checkbox" class="item-18-checkbox"> have entered, a copy of which is hereto attached / <input type="checkbox" class="item-18-checkbox"> have not entered into a marriage settlement.
             <br>
-            IN WITNESS WHEREOF, we have signed/marked with our fingerprint this certificate in quadruplicate this <input type="text" class="day-input" value="5th" style="width: 50px; border-bottom: 1px solid black;"> day of <input type="text" class="month-input" value="JANUARY 2023" style="width: 150px; border-bottom: 1px solid black;">.
+            IN WITNESS WHEREOF, we have signed/marked with our fingerprint this certificate in quadruplicate this <input type="text" class="day-input" value="" placeholder="Day" style="width: 50px; border-bottom: 1px solid black;"> day of <input type="text" class="month-input" value="" placeholder="Month-Year" style="width: 150px; border-bottom: 1px solid black;">.
         </div>
 
         <div class="signatures-row">
@@ -901,43 +1141,43 @@
             I CERTIFY FURTHER THAT:<br>
             <div style="margin-left: 20px;">
                 <div class="item-19a-row">
-                    <input type="checkbox" checked> a. Marriage License No. <input type="text" value="282895" style="width: 100px; border-bottom: 1px solid black;"> issued on <input type="text" value="NOVEMBER 24, 2022" style="width: 150px; border-bottom: 1px solid black;"> at <input type="text" value="ARGAO, CEBU" style="width: 150px; border-bottom: 1px solid black;"> in favor of said parties, was exhibited to me.
+                    <input type="checkbox"> a. Marriage License No. <input type="text" value="" placeholder="License No." style="width: 100px; border-bottom: 1px solid black;"> issued on <input type="text" value="" placeholder="MM/DD/YYYY" style="width: 150px; border-bottom: 1px solid black;"> at <input type="text" value="" placeholder="City/Province" style="width: 150px; border-bottom: 1px solid black;"> in favor of said parties, was exhibited to me.
                 </div>
                 <input type="checkbox"> b. no marriage license was necessary, the marriage being solemnized under Art. <input type="text" style="width: 30px; border-bottom: 1px solid black;"> of Executive Order No. 209.<br>
                 <input type="checkbox"> c. the marriage was solemnized in accordance with the provisions of Presidential Decree No. 1083.
             </div>
         </div>
 
-        <div style="display: flex; margin-top: 30px; text-align: center; justify-content: space-between; align-items: flex-start;">
+        <div class="solemnizing-officer-row" style="display: flex; margin-top: 30px; text-align: center; justify-content: space-between; align-items: flex-start;">
             <div style="flex: 1;">
-                <input type="text" class="solemnizing-officer" value="HON. ALLAN M. SESALDO" style="width: 80%; margin: 0 auto; font-weight: bold; text-align: center; border-bottom: 1px solid black; display: block;">
+                <input type="text" class="solemnizing-officer" value="" placeholder="Name of Solemnizing Officer" style="width: 80%; margin: 0 auto; font-weight: bold; text-align: center; border-bottom: 1px solid black; display: block;">
                 (Signature Over Printed Name of Solemnizing Officer)
             </div>
             <div style="flex: 1;">
-                <input type="text" class="position-designation" value="MUNICIPAL MAYOR" style="width: 80%; margin: 0 auto; font-weight: bold; text-align: center; border-bottom: 1px solid black; display: block;">
+                <input type="text" class="position-designation" value="" placeholder="Position/Designation" style="width: 80%; margin: 0 auto; font-weight: bold; text-align: center; border-bottom: 1px solid black; display: block;">
                 (Position/Designation)
             </div>
             <div style="flex: 1;">
-                <input type="text" class="religion-designation" style="width: 80%; margin: 0 auto; text-align: center; border-bottom: 1px solid black; display: block;">
+                <input type="text" class="religion-designation" value="" style="width: 80%; margin: 0 auto; text-align: center; border-bottom: 1px solid black; display: block;">
                 (Religion/Religious Sect, Registry No. and Expiration Date, if applicable)
             </div>
         </div>
 
-        <div style="margin-top: 15px;">
+        <div class="witnesses-section" style="margin-top: 15px;">
             20a. WITNESSES (Print Name and Sign):<br>
             <div style="font-size: 7pt; margin-left: 20px;">Additional at the back</div>
             <div class="item-20a-grid" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-top: 6px;">
                 <div style="text-align: center; border-bottom: 1px dotted black; height: 18px; display: flex; align-items: flex-end; justify-content: center; box-sizing: border-box;">
-                    <input type="text" class="auto-resize" value="POL DOMINIC MIRAFUENTES" style="width: 100%; border: none; background: transparent; padding: 0; margin: 0; font-weight: bold; text-align: center; box-sizing: border-box; outline: none;">
+                    <input type="text" class="auto-resize" value="" placeholder="Witness Name" style="width: 100%; border: none; background: transparent; padding: 0; margin: 0; font-weight: bold; text-align: center; box-sizing: border-box; outline: none;">
                 </div>
                 <div style="text-align: center; border-bottom: 1px dotted black; height: 18px; display: flex; align-items: flex-end; justify-content: center; box-sizing: border-box;">
-                    <input type="text" class="auto-resize" value="FARRAH GRACE MIRAFUENTES" style="width: 100%; border: none; background: transparent; padding: 0; margin: 0; font-weight: bold; text-align: center; box-sizing: border-box; outline: none;">
+                    <input type="text" class="auto-resize" value="" placeholder="Witness Name" style="width: 100%; border: none; background: transparent; padding: 0; margin: 0; font-weight: bold; text-align: center; box-sizing: border-box; outline: none;">
                 </div>
                 <div style="text-align: center; border-bottom: 1px dotted black; height: 18px; display: flex; align-items: flex-end; justify-content: center; box-sizing: border-box;">
-                    <input type="text" class="auto-resize" value="" style="width: 100%; border: none; background: transparent; padding: 0; margin: 0; font-weight: bold; text-align: center; box-sizing: border-box; outline: none;">
+                    <input type="text" class="auto-resize" value="" placeholder="Witness Name" style="width: 100%; border: none; background: transparent; padding: 0; margin: 0; font-weight: bold; text-align: center; box-sizing: border-box; outline: none;">
                 </div>
                 <div style="text-align: center; border-bottom: 1px dotted black; height: 18px; display: flex; align-items: flex-end; justify-content: center; box-sizing: border-box;">
-                    <input type="text" class="auto-resize" value="" style="width: 100%; border: none; background: transparent; padding: 0; margin: 0; font-weight: bold; text-align: center; box-sizing: border-box; outline: none;">
+                    <input type="text" class="auto-resize" value="" placeholder="Witness Name" style="width: 100%; border: none; background: transparent; padding: 0; margin: 0; font-weight: bold; text-align: center; box-sizing: border-box; outline: none;">
                 </div>
             </div>
         </div>
@@ -953,15 +1193,15 @@
                 </div>
                 <div style="display: flex; margin-bottom: 5px;">
                     <span style="width: 80px;">Name in Print</span>
-                    <input type="text" value="CESANDRA G. ORTEGA" style="flex: 1; font-weight: bold; border-bottom: 1px solid black;">
+                    <input type="text" value="" placeholder="Name in Print" style="flex: 1; font-weight: bold; border-bottom: 1px solid black;">
                 </div>
                 <div style="display: flex; margin-bottom: 5px;">
                     <span style="width: 80px;">Title or Position</span>
-                    <input type="text" value="MCR-CLERK" style="flex: 1; border-bottom: 1px solid black;">
+                    <input type="text" value="" placeholder="Title or Position" style="flex: 1; border-bottom: 1px solid black;">
                 </div>
                 <div style="display: flex;">
                     <span style="width: 80px;">Date</span>
-                    <input type="text" value="JANUARY 5, 2023" style="flex: 1; border-bottom: 1px solid black;">
+                    <input type="text" value="" placeholder="Date" style="flex: 1; border-bottom: 1px solid black;">
                 </div>
             </div>
         </div>
@@ -974,15 +1214,15 @@
                 </div>
                 <div style="display: flex; margin-bottom: 5px;">
                     <span style="width: 80px;">Name in Print</span>
-                    <input type="text" value="GIL MELCHOR RUBIA" style="flex: 1; font-weight: bold; border-bottom: 1px solid black;">
+                    <input type="text" value="" placeholder="Name in Print" style="flex: 1; font-weight: bold; border-bottom: 1px solid black;">
                 </div>
                 <div style="display: flex; margin-bottom: 5px;">
                     <span style="width: 80px;">Title or Position</span>
-                    <input type="text" value="MUNICIPAL CIVIL REGISTRAR" style="flex: 1; border-bottom: 1px solid black;">
+                    <input type="text" value="" placeholder="Title or Position" style="flex: 1; border-bottom: 1px solid black;">
                 </div>
                 <div style="display: flex;">
                     <span style="width: 80px;">Date</span>
-                    <input type="text" value="JANUARY 5, 2023" style="flex: 1; border-bottom: 1px solid black;">
+                    <input type="text" value="" placeholder="Date" style="flex: 1; border-bottom: 1px solid black;">
                 </div>
             </div>
         </div>
@@ -1000,68 +1240,68 @@
             <div class="barcode-group">
                 <div class="barcode-label">4bH</div>
                 <div class="barcode-boxes">
-                    <div class="barcode-box"><input type="text" value="0"></div>
-                    <div class="barcode-box"><input type="text" value="1"></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
                 </div>
             </div>
             <!-- 4bW -->
             <div class="barcode-group">
                 <div class="barcode-label">4bW</div>
                 <div class="barcode-boxes">
-                    <div class="barcode-box"><input type="text" value="0"></div>
-                    <div class="barcode-box"><input type="text" value="1"></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
                 </div>
             </div>
             <!-- 5H -->
             <div class="barcode-group">
                 <div class="barcode-label">5H</div>
                 <div class="barcode-boxes">
-                    <div class="barcode-box"><input type="text" value="6"></div>
-                    <div class="barcode-box"><input type="text" value="0"></div>
-                    <div class="barcode-box"><input type="text" value="8"></div>
-                    <div class="barcode-box"><input type="text" value="0"></div>
-                    <div class="barcode-box"><input type="text" value="2"></div>
-                    <div class="barcode-box"><input type="text" value="2"></div>
-                    <div class="barcode-box"><input type="text" value="2"></div>
-                    <div class="barcode-box"><input type="text" value="6"></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
                 </div>
             </div>
             <!-- 5W -->
             <div class="barcode-group">
                 <div class="barcode-label">5W</div>
                 <div class="barcode-boxes">
-                    <div class="barcode-box"><input type="text" value="6"></div>
-                    <div class="barcode-box"><input type="text" value="0"></div>
-                    <div class="barcode-box"><input type="text" value="8"></div>
-                    <div class="barcode-box"><input type="text" value="0"></div>
-                    <div class="barcode-box"><input type="text" value="2"></div>
-                    <div class="barcode-box"><input type="text" value="2"></div>
-                    <div class="barcode-box"><input type="text" value="0"></div>
-                    <div class="barcode-box"><input type="text" value="5"></div>
-                    <div class="barcode-box"><input type="text" value="9"></div>
-                    <div class="barcode-box"><input type="text" value="9"></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
                 </div>
             </div>
             <!-- 6H -->
             <div class="barcode-group">
                 <div class="barcode-label">6H</div>
                 <div class="barcode-boxes">
-                    <div class="barcode-box"><input type="text" value="0"></div>
-                    <div class="barcode-box"><input type="text" value="8"></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
                 </div>
             </div>
             <!-- 6W -->
             <div class="barcode-group">
                 <div class="barcode-label">6W</div>
                 <div class="barcode-boxes">
-                    <div class="barcode-box"><input type="text" value="1"></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
                 </div>
             </div>
             <!-- 7H -->
             <div class="barcode-group">
                 <div class="barcode-label">7H</div>
                 <div class="barcode-boxes">
-                    <div class="barcode-box"><input type="text" value="1"></div>
+                    <div class="barcode-box"><input type="text" value=""></div>
                 </div>
             </div>
              <!-- 7W -->
@@ -1104,7 +1344,11 @@
     function updateTransform() {
         const top = document.getElementById('marginTop').value; // mm
         const left = document.getElementById('marginLeft').value; // mm
-        const scale = document.getElementById('scale').value / 100;
+        const scaleVal = document.getElementById('scale').value;
+        const scale = scaleVal / 100;
+        
+        // Save to storage
+        localStorage.setItem('printConfig', JSON.stringify({top, left, scale: scaleVal}));
         
         const container = document.querySelector('.page-container');
         
@@ -1122,7 +1366,14 @@
     }
     
     // Initialize
+    // Load saved settings
+    const savedConfig = JSON.parse(localStorage.getItem('printConfig') || '{}');
+    if (savedConfig.top !== undefined) document.getElementById('marginTop').value = savedConfig.top;
+    if (savedConfig.left !== undefined) document.getElementById('marginLeft').value = savedConfig.left;
+    if (savedConfig.scale !== undefined) document.getElementById('scale').value = savedConfig.scale;
+
     updatePaperSize();
+    updateTransform(); // Apply loaded settings
     adjustAutoResizeInputs();
 
     // Auto-resize font for long text
