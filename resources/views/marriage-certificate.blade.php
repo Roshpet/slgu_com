@@ -447,19 +447,20 @@
             }
             
             /* And reset internal spacing for Section 19a row if needed, or let it flow */
-            .item-19a-row {
-                 margin-top: 0 !important;
-            }
-
             /* Item 18 Checkboxes: Down 0.12in (was 0.51in -> 0.63in), Left 0.35in */
             .item-18-checkbox {
                 transform: translate(-0.35in, 0.63in) !important;
             }
-            /* Item 19a (Marriage License): Down 0.12in (was -0.39in -> -0.28in), Right 1.14in */
+
+            /* Item 19a (Marriage License): Fixed position above Solemnizing Officer */
             .item-19a-row {
-                transform: translate(1.14in, -0.28in) !important;
+                position: absolute !important;
+                top: 10.15in !important;
+                left: 1.14in !important;
+                transform: none !important;
+                margin-top: 0 !important;
             }
-            /* Item 19a Checkbox Specific: Left 1.06in (was 0.94in) relative to row, Down 0.08in (was Up 0.08in) */
+            /* Item 19a Checkbox Specific: Left 1.06in relative to row */
             .item-19a-row input[type="checkbox"] {
                 transform: translate(-1.06in, 0.0in) !important;
             }
@@ -467,16 +468,16 @@
             /* Solemnizing Officer Container: Fixed position below Section 19a */
             .solemnizing-officer-row {
                 position: absolute !important;
-                top: 10.40in !important;
+                top: 10.50in !important;
                 left: 0 !important;
                 width: 100% !important;
                 margin-top: 0 !important;
             }
 
-            /* Witnesses Section (20a): Fixed position 0.7in below Section 19a data */
+            /* Witnesses Section (20a): Fixed position below Solemnizing Officer (0.7in gap from 19a) */
             .witnesses-section {
                 position: absolute !important;
-                top: 10.90in !important;
+                top: 10.85in !important;
                 left: 0 !important;
                 width: 100% !important;
                 margin-top: 0 !important;
@@ -495,10 +496,10 @@
                 padding: 0 0.04in !important;
             }
 
-            /* Section 21 & 22 (Footer): Fixed position 0.7in below Witness data */
+            /* Section 21 & 22 (Footer): Fixed position at the bottom (0.7in gap from 20a) */
             .footer-grid {
                 position: absolute !important;
-                top: 12.0in !important;
+                top: 11.55in !important;
                 left: 0 !important;
                 width: 100% !important;
                 margin-top: 0 !important;
