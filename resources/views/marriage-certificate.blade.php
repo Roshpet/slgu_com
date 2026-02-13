@@ -399,9 +399,12 @@
             }
 
             /* Section 18 (Certification): 0.39in below Section 16/17 */
-            .certification-text {
+            .section-18-container {
                 margin-top: 0.39in !important;
                 position: relative !important;
+            }
+            .section-19-container {
+                position: static !important;
             }
 
             /* Item 18 (Certification of Contracting Parties) */
@@ -459,10 +462,32 @@
                 left: 1.14in !important;
                 transform: none !important;
                 margin-top: 0 !important;
+                width: 100% !important;
+            }
+            .item-19b-row {
+                position: absolute !important;
+                top: 10.30in !important;
+                left: 1.14in !important;
+                width: 100% !important;
+            }
+            .item-19c-row {
+                position: absolute !important;
+                top: 10.45in !important;
+                left: 1.14in !important;
+                width: 100% !important;
+            }
+            .item-19a-row input,
+            .item-19b-row input,
+            .item-19c-row input {
+                visibility: visible !important;
+                display: inline-block !important;
             }
             /* Item 19a Checkbox Specific: Left 1.06in relative to row */
-            .item-19a-row input[type="checkbox"] {
+            .item-19a-row input[type="checkbox"],
+            .item-19b-row input[type="checkbox"],
+            .item-19c-row input[type="checkbox"] {
                 transform: translate(-1.06in, 0.0in) !important;
+                display: none !important;
             }
 
             /* Solemnizing Officer Container: Fixed position below Section 19a */
@@ -488,6 +513,7 @@
             .position-designation,
             .religion-designation {
                 transform: translate(0.59in, 0in) !important;
+                visibility: visible !important;
             }
 
             /* Item 20a (Witnesses): Horizontal shift only */
@@ -1118,7 +1144,7 @@
             </div>
         </div>
 
-        <div class="certification-text">
+        <div class="certification-text section-18-container">
             18. CERTIFICATION OF THE CONTRACTING PARTIES:<br>
             THIS IS TO CERTIFY: That I, <input type="text" class="item-18-input-1" value="" placeholder="Name of Husband" style="width: 250px; border-bottom: 1px solid black;"> and I, <input type="text" class="item-18-input-2" value="" placeholder="name of wife" style="width: 250px; border-bottom: 1px solid black;">, both of legal age, of our own free will and accord, and in the presence of the person solemnizing this marriage and of the witnesses named below, take each other as husband and wife and certifying further that we: <input type="checkbox" class="item-18-checkbox"> have entered, a copy of which is hereto attached / <input type="checkbox" class="item-18-checkbox"> have not entered into a marriage settlement.
             <br>
@@ -1136,7 +1162,7 @@
             </div>
         </div>
         
-        <div class="certification-text">
+        <div class="certification-text section-19-container">
             19. CERTIFICATION OF THE SOLEMNIZING OFFICER:<br>
             THIS IS TO CERTIFY: THAT BEFORE ME, on the date and place above-written, personally appeared the above-mentioned parties, with their mutual consent, lawfully joined together in marriage which was solemnized by me in the presence of the witnesses named below, all of legal age.<br>
             I CERTIFY FURTHER THAT:<br>
@@ -1144,8 +1170,12 @@
                 <div class="item-19a-row">
                     <input type="checkbox"> a. Marriage License No. <input type="text" value="" placeholder="License No." style="width: 100px; border-bottom: 1px solid black;"> issued on <input type="text" value="" placeholder="MM/DD/YYYY" style="width: 150px; border-bottom: 1px solid black;"> at <input type="text" value="" placeholder="City/Province" style="width: 150px; border-bottom: 1px solid black;"> in favor of said parties, was exhibited to me.
                 </div>
-                <input type="checkbox"> b. no marriage license was necessary, the marriage being solemnized under Art. <input type="text" style="width: 30px; border-bottom: 1px solid black;"> of Executive Order No. 209.<br>
-                <input type="checkbox"> c. the marriage was solemnized in accordance with the provisions of Presidential Decree No. 1083.
+                <div class="item-19b-row">
+                    <input type="checkbox"> b. no marriage license was necessary, the marriage being solemnized under Art. <input type="text" style="width: 30px; border-bottom: 1px solid black;"> of Executive Order No. 209.
+                </div>
+                <div class="item-19c-row">
+                    <input type="checkbox"> c. the marriage was solemnized in accordance with the provisions of Presidential Decree No. 1083.
+                </div>
             </div>
         </div>
 
