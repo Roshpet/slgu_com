@@ -53,7 +53,7 @@
             body.print-data-only input,
             body.print-data-only textarea {
                 visibility: visible !important;
-                color: #000000ff !important;
+                color: #fffb00ff !important;
                 background: transparent !important;
                 border: none !important;
                 /* Ensure inputs don't have borders even if they had them before */
@@ -490,10 +490,10 @@
                 display: none !important;
             }
 
-            /* Solemnizing Officer Container: Fixed position below Section 19a (0.7in gap) */
+            /* Solemnizing Officer Container: Fixed position below Section 19b (0.39in gap) */
             .solemnizing-officer-row {
                 position: absolute !important;
-                top: 10.85in !important;
+                top: 10.84in !important;
                 left: 0 !important;
                 width: 100% !important;
                 margin-top: 0 !important;
@@ -502,7 +502,7 @@
             /* Witnesses Section (20a): Fixed position below Solemnizing Officer (0.7in gap) */
             .witnesses-section {
                 position: absolute !important;
-                top: 11.55in !important;
+                top: 11.54in !important;
                 left: 0 !important;
                 width: 100% !important;
                 margin-top: 0 !important;
@@ -525,7 +525,7 @@
             /* Section 21 & 22 (Footer): Fixed position at the bottom (0.7in gap from 20a) */
             .footer-grid {
                 position: absolute !important;
-                top: 12.25in !important;
+                top: 12.24in !important;
                 left: 0 !important;
                 width: 100% !important;
                 margin-top: 0 !important;
