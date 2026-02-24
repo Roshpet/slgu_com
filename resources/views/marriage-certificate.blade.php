@@ -53,7 +53,7 @@
             body.print-data-only input,
             body.print-data-only textarea {
                 visibility: visible !important;
-                color: #fffb00ff !important;
+                color: #b7f805ff !important;
                 background: transparent !important;
                 border: none !important;
                 /* Ensure inputs don't have borders even if they had them before */
@@ -94,18 +94,18 @@
 
             /* Shift printed data upward for pre-printed forms */
             /* Province and City - ABSOLUTE POSITIONING based on User Measurements */
-            /* Top Edge -> Province: 1.10in */
+            /* Top Edge -> Province: 0.94in */
             #input-province {
                 position: absolute !important;
-                top: 1.10in !important;
+                top: 0.94in !important;
                 left: 1.50in !important; /* Adjusted for label width */
                 transform: none !important;
                 width: 4.72in !important;
             }
-            /* Province -> City: 0.31in (Total Top: 1.42in) */
+            /* Province -> City: 0.19in (Total Top: 1.13in) */
             #input-city {
                 position: absolute !important;
-                top: 1.34in !important;
+                top: 1.13in !important;
                 left: 1.77in !important;
                 transform: none !important;
                 width: 4.72in !important;
@@ -128,21 +128,21 @@
                 position: static !important;
             }
 
-            /* Set height for Section 1 Row to ensure Section 2 starts 0.39in below */
+            /* Set height for Section 1 Row to ensure Section 2 starts 0.31in below */
             table.main-form tbody tr:first-child {
-                height: 0.39in !important;
+                height: 0.31in !important;
             }
 
             /* Husband (Col 2) - Reset absolute, let it flow in the table */
             table.main-form tbody tr:first-child td:nth-child(2) input {
                 position: static !important;
-                transform: none !important;
+                transform: translateY(-0.24in) !important;
                 width: 100% !important;
             }
             /* Wife (Col 3) - Reset absolute, let it flow in the table */
             table.main-form tbody tr:first-child td:nth-child(3) input {
                 position: static !important;
-                transform: translate(0.75in, 0in) !important; /* Keep the X-shift for wife column if needed */
+                transform: translate(0.75in, -0.24in) !important; /* Keep the X-shift for wife column if needed */
                 width: 100% !important;
             }
             
@@ -150,46 +150,42 @@
             /* Let's try to rely on flow + row height adjustments now */
             
             /* Section 1 (Name) */
-            /* If we pushed the whole table down to 1.81in, Section 1 should be close. */
-            /* Adjust Section 1 specifically if needed */
+            /* User Request: Top Edge of Table -> Section 1: 0.27in */
             table.main-form tbody tr:first-child input {
-                 /* Fine tune Y if the margin-top 1.81in isn't perfect for the text baseline */
-                 transform: translateY(-0.08in) !important; 
+                 transform: translateY(0.27in) !important; 
             }
             
             /* Wife (Col 3) specific X shift */
             table.main-form td:nth-child(3) input {
-                transform: translateX(0.75in) !important;
+                transform: translate(0.75in, 0.27in) !important;
             }
 
-            /* Section 2 (Date of Birth) Specific Shift: 0.39in below Section 1 */
-            /* We set Row 1 height to 0.39in, so Row 2 starts at 0.39in. */
-            /* Reset Y-transform to 0 or adjust slightly */
+            /* Section 2 (Date of Birth) Specific Shift: 0.31in below Section 1 */
+            /* We set Row 1 height to 0.31in, so Row 2 starts at 0.31in. */
             /* Husband (Col 2) */
             table.main-form tbody tr:nth-child(2) td:nth-child(2) input {
-                transform: translate(0.20in, 0.0in) !important; /* Kept X, reset Y */
+                transform: translate(0.20in, -0.32in) !important; /* Net move up ~1.5cm */
             }
             /* Wife (Col 3) */
             /* User Request: Distance of wife column from husband column should be 0.39in */
             /* Previously X-shift was 0.94in. Reducing to 0.39in to bring it closer (or align to 0.39in gap) */
             table.main-form tbody tr:nth-child(2) td:nth-child(3) input {
-                transform: translate(0.39in, 0.0in) !important; /* Adjusted X-shift from 0.94in to 0.39in */
+                transform: translate(0.39in, -0.32in) !important; /* Net move up ~1.5cm */
             }
 
-            /* Set height for Section 2 Row to ensure Section 3 starts 0.31in below */
+            /* Set height for Section 2 Row to ensure Section 3 starts 0.23in below */
             table.main-form tbody tr:nth-child(2) {
-                height: 0.31in !important;
+                height: 0.23in !important;
             }
 
-            /* Section 3 (Place of Birth) Specific Shift: Down 0.12in (was -0.12in -> 0.0in) */
-            /* Now handled by Row 2 Height being 0.31in */
+            /* Section 3 (Place of Birth) Specific Shift */
             /* Husband (Col 2) */
             table.main-form tbody tr:nth-child(3) td:nth-child(2) input {
-                transform: translate(0.20in, 0.0in) !important;
+                transform: translate(0.20in, -0.28in) !important;
             }
             /* Wife (Col 3) */
             table.main-form tbody tr:nth-child(3) td:nth-child(3) input {
-                transform: translate(0.94in, 0.0in) !important;
+                transform: translate(0.94in, -0.28in) !important;
             }
             /* Set height for Section 3 Row to ensure Section 4 starts 0.31in below */
             table.main-form tbody tr:nth-child(3) {
@@ -204,14 +200,14 @@
             }
             /* Husband (Col 2) Sex (4a) */
             table.main-form tbody tr:nth-child(4) td:nth-child(2) input:nth-of-type(1) {
-                transform: translateY(0.0in) !important;
+                transform: translateY(-0.32in) !important;
                 margin-right: 1.18in !important; /* Distance to Citizenship */
                 width: 0.59in !important; /* Force width to avoid wrapping or stretching */
                 flex: none !important; /* Disable flex-grow */
             }
             /* Husband (Col 2) Citizenship (4b) */
             table.main-form tbody tr:nth-child(4) td:nth-child(2) input:nth-of-type(2) {
-                transform: translateY(0.0in) !important;
+                transform: translateY(-0.32in) !important;
                 flex: 1 !important; /* Let citizenship take remaining space */
                 text-align: left !important; /* Reset alignment if needed */
             }
@@ -222,140 +218,152 @@
             }
             /* Wife (Col 3) Sex (4a) */
             table.main-form tbody tr:nth-child(4) td:nth-child(3) input:nth-of-type(1) {
-                transform: translate(0.35in, 0.0in) !important; /* Keep the 0.35in shift for Wife col */
+                transform: translate(0.35in, -0.32in) !important; /* Keep the 0.35in shift for Wife col */
                 margin-right: 1.18in !important;
                 width: 0.59in !important;
                 flex: none !important;
             }
             /* Wife (Col 3) Citizenship (4b) */
             table.main-form tbody tr:nth-child(4) td:nth-child(3) input:nth-of-type(2) {
-                transform: translate(0.35in, 0.0in) !important;
+                transform: translate(0.35in, -0.32in) !important;
                 flex: 1 !important;
                 text-align: left !important;
             }
 
-            /* Set height for Section 4 Row to ensure Section 5 starts 0.63in below */
+            /* Set height for Section 4 Row to ensure Section 5 starts 0.51in below */
             table.main-form tbody tr:nth-child(4) {
-                height: 0.63in !important;
+                height: 0.51in !important;
             }
 
-            /* Section 5, 6, 7 Specific Shift: Down 0.12in (was 0.0in -> 0.12in) */
+            /* Section 5, 6, 7 Specific Shift */
             /* Husband (Col 2) */
-            /* Section 5: Reset Y to 0.0in as we use Row Height now */
+            /* Section 5: Move up by additional ~0.2cm (0.08in) from -0.32in to -0.40in */
             table.main-form tbody tr:nth-child(5) td:nth-child(2) input {
-                 transform: translateY(0.0in) !important;
+                 transform: translateY(-0.40in) !important;
             }
-            /* Set height for Section 5 Row to ensure Section 6 starts 0.20in below */
+            /* Set height for Section 5 Row to ensure Section 6 starts 0.15in below */
             table.main-form tbody tr:nth-child(5) {
-                height: 0.20in !important;
+                height: 0.15in !important;
             }
 
-            /* Section 6, 7 Specific Shift: Down 0.12in (was 0.0in -> 0.12in) */
+            /* Section 6, 7 Specific Shift */
             /* Husband (Col 2) */
-            /* Section 6: Reset Y to 0.0in as we use Row Height now */
+            /* Section 6: Move up by additional ~0.2cm (0.08in) from -0.24in to -0.32in */
             table.main-form tbody tr:nth-child(6) td:nth-child(2) input {
-                 transform: translateY(0.0in) !important;
+                 transform: translateY(-0.32in) !important;
             }
-            /* Set height for Section 6 Row to ensure Section 7 starts 0.31in below */
+            /* Set height for Section 6 Row to ensure Section 7 starts 0.23in below */
             table.main-form tbody tr:nth-child(6) {
-                height: 0.31in !important;
+                height: 0.23in !important;
             }
 
             /* Section 7 */
             table.main-form tbody tr:nth-child(7) td:nth-child(2) input {
-                transform: translateY(0.0in) !important;
+                transform: translateY(-0.36in) !important;
             }
-            /* Set height for Section 7 Row to ensure Section 8 starts 0.20in below */
+            /* Set height for Section 7 Row to ensure Section 8 starts 0.15in below */
             table.main-form tbody tr:nth-child(7) {
-                height: 0.20in !important;
+                height: 0.15in !important;
             }
 
             /* Wife (Col 3) */
-            /* Section 5: Reset Y to 0.0in, keep X shift (maybe 0.35in? or 0.75in?) */
-            /* User previously set Wife X to 0.35in for Sec 4, and 0.39in for Sec 2. */
-            /* Let's keep 0.75in for now unless specified, but reset Y */
+            /* Section 5: Move up by additional ~0.2cm (0.08in), keep X shift */
             table.main-form tbody tr:nth-child(5) td:nth-child(3) input {
-                transform: translate(0.75in, 0.0in) !important;
+                transform: translate(0.75in, -0.40in) !important;
             }
             /* Section 6, 7 */
-            /* Section 6: Reset Y to 0.0in, keep X */
+            /* Section 6: Move up by additional ~0.2cm (0.08in), keep X */
             table.main-form tbody tr:nth-child(6) td:nth-child(3) input {
-                transform: translate(0.75in, 0.0in) !important;
+                transform: translate(0.75in, -0.32in) !important;
             }
             /* Section 7 */
             table.main-form tbody tr:nth-child(7) td:nth-child(3) input {
-                transform: translate(0.75in, 0.0in) !important;
+                transform: translate(0.75in, -0.36in) !important;
             }
 
-            /* Section 8 Specific Shift: Down 0.12in (was 0.0in -> 0.12in) */
-            /* Husband (Col 2) */
+            /* Section 8 Specific Shift */
+            /* Husband (Col 2): Move up by additional ~0.3cm (~0.12in) from -0.24in to -0.36in */
             table.main-form tbody tr:nth-child(8) td:nth-child(2) input {
-                transform: translateY(0.0in) !important;
+                transform: translateY(-0.36in) !important;
             }
-            /* Set height for Section 8 Row to ensure Section 9 starts 0.20in below */
+            /* Set height for Section 8 Row to ensure Section 9 starts 0.15in below */
             table.main-form tbody tr:nth-child(8) {
-                height: 0.20in !important;
+                height: 0.15in !important;
             }
 
-            /* Section 9 Specific Shift: Down 0.12in (was 0.12in -> 0.24in) */
-            /* Husband (Col 2) */
+            /* Section 9 Specific Shift */
+            /* Husband (Col 2): Move up by additional ~0.2cm (~0.08in) from -0.24in to -0.32in */
             table.main-form tbody tr:nth-child(9) td:nth-child(2) input {
-                transform: translateY(0.0in) !important;
+                transform: translateY(-0.32in) !important;
             }
-            /* Set height for Section 9 Row to ensure Section 10 starts 0.28in below */
+            /* Set height for Section 9 Row to ensure Section 10 starts 0.11in below */
             table.main-form tbody tr:nth-child(9) {
-                height: 0.28in !important;
+                height: 0.11in !important;
             }
 
-            /* Section 10 Husband (Col 2): Down 0.12in (was 0.04in -> 0.16in) */
+            /* Section 10 Husband (Col 2): Move up by ~1.5cm (0.59in) from 0.27in to -0.32in */
             table.main-form tbody tr:nth-child(10) td:nth-child(2) input {
-                transform: translateY(0.0in) !important;
+                transform: translateY(-0.32in) !important;
             }
 
             /* Wife (Col 3) */
-            /* Section 8 */
+            /* Section 8: Move up by additional ~0.3cm (~0.12in), keep X shift */
             table.main-form tbody tr:nth-child(8) td:nth-child(3) input {
-                transform: translate(0.75in, 0.0in) !important;
+                transform: translate(0.75in, -0.36in) !important;
             }
-            /* Section 9 */
+            /* Section 9: Move up by additional ~0.2cm (~0.08in), keep X shift */
             table.main-form tbody tr:nth-child(9) td:nth-child(3) input {
-                transform: translate(0.75in, 0.0in) !important;
+                transform: translate(0.75in, -0.32in) !important;
             }
-            /* Section 10 Wife (Col 3): Down 0.12in (was 0.04in -> 0.16in) */
+            /* Section 10 Wife (Col 3): Move up by ~1.5cm (0.59in), keep X shift */
             table.main-form tbody tr:nth-child(10) td:nth-child(3) input {
-                transform: translate(0.75in, 0.0in) !important;
+                transform: translate(0.75in, -0.32in) !important;
             }
-            /* Set height for Section 10 Row to ensure Section 11 starts 0.20in below */
+            /* Set height for Section 10 Row to ensure Section 11 starts 0.23in below */
             table.main-form tbody tr:nth-child(10) {
-                height: 0.20in !important;
+                height: 0.23in !important;
             }
 
-            /* Section 11 Specific Shift: Down 0.12in (was 0.16in -> 0.28in) */
-            /* Husband (Col 2) */
+            /* Section 11 Specific Shift */
+            /* Husband (Col 2): Move up by ~1.3cm (0.51in) from 0.27in to -0.24in */
             table.main-form tbody tr:nth-child(11) td:nth-child(2) input {
-                transform: translateY(0.0in) !important;
+                transform: translateY(-0.24in) !important;
             }
-            /* Wife (Col 3) */
+            /* Wife (Col 3): Move up by ~1.3cm (0.51in), keep X shift */
             table.main-form tbody tr:nth-child(11) td:nth-child(3) input {
-                transform: translate(0.75in, 0.0in) !important;
+                transform: translate(0.75in, -0.24in) !important;
             }
             /* Set height for Section 11 Row to ensure Section 12 starts 0.31in below */
             table.main-form tbody tr:nth-child(11) {
                 height: 0.31in !important;
             }
 
-            /* Section 12, 13, 14 Specific Shift: Down 0.12in (was 0.20in -> 0.31in) */
+            /* Section 12, 13, 14 Specific Shift */
             /* Husband (Col 2) */
-            table.main-form tbody tr:nth-child(12) td:nth-child(2) input,
-            table.main-form tbody tr:nth-child(13) td:nth-child(2) input,
+            /* Section 12: Move up by additional ~0.1cm (~0.04in) from -0.24in to -0.28in */
+            table.main-form tbody tr:nth-child(12) td:nth-child(2) input {
+                transform: translateY(-0.28in) !important;
+            }
+            /* Section 13: Move up by additional ~0.3cm (~0.12in) from -0.24in to -0.36in */
+            table.main-form tbody tr:nth-child(13) td:nth-child(2) input {
+                transform: translateY(-0.36in) !important;
+            }
+            /* Section 14: Move up by additional ~0.3cm (~0.12in) from -0.24in to -0.36in */
             table.main-form tbody tr:nth-child(14) td:nth-child(2) input {
-                transform: translateY(0.0in) !important;
+                transform: translateY(-0.36in) !important;
             }
             /* Wife (Col 3) */
-            table.main-form tbody tr:nth-child(12) td:nth-child(3) input,
-            table.main-form tbody tr:nth-child(13) td:nth-child(3) input,
+            /* Section 12: Move up by additional ~0.1cm (~0.04in), keep X shift */
+            table.main-form tbody tr:nth-child(12) td:nth-child(3) input {
+                transform: translate(0.75in, -0.28in) !important;
+            }
+            /* Section 13: Move up by additional ~0.3cm (~0.12in), keep X shift */
+            table.main-form tbody tr:nth-child(13) td:nth-child(3) input {
+                transform: translate(0.75in, -0.36in) !important;
+            }
+            /* Section 14: Move up by additional ~0.3cm (~0.12in), keep X shift */
             table.main-form tbody tr:nth-child(14) td:nth-child(3) input {
-                transform: translate(0.75in, 0.0in) !important;
+                transform: translate(0.75in, -0.36in) !important;
             }
 
             /* Set height for Section 12 Row to ensure Section 13 starts 0.20in below */
@@ -363,24 +371,24 @@
                 height: 0.20in !important;
             }
 
-            /* Set height for Section 13 Row to ensure Section 14 starts 0.31in below */
+            /* Set height for Section 13 Row to ensure Section 14 starts 0.30in below */
             table.main-form tbody tr:nth-child(13) {
-                height: 0.31in !important;
+                height: 0.30in !important;
             }
 
             /* Age Input Specific Shifts (Right 0.20in relative to column base) */
-            /* Husband Age (Col 2): Down 0.12in (was -0.31in -> -0.20in) */
+            /* Husband Age (Col 2): Baseline 0.27in - 0.20in = 0.07in */
             table.main-form td:nth-child(2) input.age-input {
-                transform: translate(0.31in, -0.20in) !important;
+                transform: translate(0.31in, 0.07in) !important;
             }
-            /* Wife Age (Col 3): Down 0.12in (was -0.31in -> -0.20in) */
+            /* Wife Age (Col 3): Baseline 0.27in - 0.20in = 0.07in */
             table.main-form td:nth-child(3) input.age-input {
-                transform: translate(0.51in, -0.20in) !important;
+                transform: translate(0.51in, 0.07in) !important;
             }
 
-            /* Item 15 (Place of Marriage): Right 0.20in, Y aligned via section margin */
+            /* Item 15 (Place of Marriage): Right 0.20in, moved down by ~0.1cm (~0.04in) to -0.52in */
             .item-15-row input {
-                transform: translate(0.20in, 0.0in) !important;
+                transform: translate(0.20in, -0.52in) !important;
             }
 
             /* Section 16 & 17 Container: 0.31in below Section 15 */
@@ -388,19 +396,20 @@
                 margin-top: 0.31in !important;
             }
 
-            /* Item 16 (Date of Marriage): Reset Y */
+            /* Item 16 (Date of Marriage): Move up by additional ~1cm (~0.39in) to ~2.3cm total */
             .item-16-input {
-                transform: translateY(0.0in) !important;
+                transform: translateY(-0.90in) !important;
             }
-
-            /* Item 17 (Time of Marriage): Right 0.75in, Reset Y */
+            
+            /* Item 17 (Time of Marriage): Right 0.75in, move up by additional ~0.1cm (~0.04in) */
             .item-17-input {
-                transform: translate(0.75in, 0.0in) !important;
+                transform: translate(0.75in, -0.94in) !important;
             }
 
-            /* Section 18 (Certification): 0.39in below Section 16/17 */
+            /* Section 18 (Certification): Move further right by ~0.5cm (~0.20in) to total ~1.0cm */
             .section-18-container {
-                margin-top: 0.39in !important;
+                margin-top: -0.79in !important;
+                margin-left: 0.40in !important;
                 position: relative !important;
             }
             .section-19-container {
@@ -412,7 +421,7 @@
             .item-18-input-1 {
                 position: absolute !important;
                 top: 0 !important;
-                left: 1.97in !important; /* Adjusted to align with blank after 'That I,' */
+                left: 2.05in !important; /* Moved right by ~0.2cm (~0.08in) after 'That I,' */
                 transform: none !important;
             }
             /* Item 18 Second Input: Absolute Position for precision */
@@ -426,16 +435,16 @@
             /* Item 18 (Day of Month): Aligned with Month, 0.31in below Names (approx 0.59in from top) */
             .day-input {
                 position: absolute !important;
-                top: 0.59in !important;
-                left: 4.72in !important; /* Adjusted left position */
+                top: 0.39in !important;  /* Moved up by ~0.5cm (~0.20in) */
+                left: 5.11in !important; /* Moved right by ~1cm (~0.39in) */
                 transform: none !important;
             }
 
             /* Item 18 (Month of Year): Aligned with Day */
             .month-input {
                 position: absolute !important;
-                top: 0.59in !important;
-                left: 5.91in !important; /* Adjusted left position */
+                top: 0.39in !important;  /* Moved up by ~0.5cm (~0.20in) */
+                left: 6.30in !important; /* Moved right by ~1cm (~0.39in) */
                 transform: none !important;
             }
 
@@ -835,54 +844,8 @@
 <body>
 
 <div class="controls no-print" style="width: 300px;">
-    <button class="btn" onclick="window.print()" style="width: 100%; margin-bottom: 10px;">🖨️ Print Form</button>
-    
-    <div style="background: #f8f9fa; padding: 10px; border-radius: 4px; border: 1px solid #ddd;">
-        <label style="cursor: pointer; display: block; margin-bottom: 10px;">
-            <input type="checkbox" id="dataOnlyToggle" onchange="toggleDataOnly(this)"> 
-            <strong>Print Data Only</strong>
-            <div style="font-size: 0.8em; color: #666; margin-left: 20px;">For pre-printed forms</div>
-        </label>
-
-        <div id="advanced-controls" style="display: block;">
-        <hr style="margin: 10px 0; border: 0; border-top: 1px solid #ddd;">
-        
-        <strong>Paper Size:</strong>
-        <select id="paperSize" onchange="updatePaperSize()" style="width: 100%; margin-bottom: 10px; padding: 5px;">
-            <option value="legal">Legal (8.5" x 14")</option>
-            <option value="folio">Long/Folio (8.5" x 13")</option>
-        </select>
-
-        <strong>Alignment Adjustment (mm):</strong>
-        <div style="display: flex; gap: 10px; margin-bottom: 5px;">
-            <div style="flex:1">
-                <label style="font-size: 0.9em;">Top:</label>
-                <input type="number" id="marginTop" value="0" style="width: 100%;" onchange="updateTransform()">
-            </div>
-            <div style="flex:1">
-                <label style="font-size: 0.9em;">Left:</label>
-                <input type="number" id="marginLeft" value="0" style="width: 100%;" onchange="updateTransform()">
-            </div>
-        </div>
-
-        <strong>Scale (%):</strong>
-        <div style="margin-bottom: 5px;">
-             <input type="number" id="scale" value="100" style="width: 100%;" onchange="updateTransform()">
-             <div style="font-size: 0.8em; color: #666;">Use < 100 to shrink if printing too big</div>
-        </div>
-        </div>
-    </div>
+    <button class="btn" onclick="printDataOnly()" style="width: 100%;">🖨️ Print Data</button>
 </div>
-
-<style>
-    /* Dynamic Page Size Style Block */
-    @media print {
-        @page {
-            margin: 0;
-            /* size will be injected here */
-        }
-    }
-</style>
 
 <div class="page-container">
     <!-- Header -->
@@ -923,11 +886,11 @@
             <tr>
                 <td>1. Name of Contracting Parties</td>
                 <td>
-                    <div style="display: flex; margin-bottom: 2px;">
+                    <div style="display: flex; margin-bottom: 0px;">
                         <span class="field-sublabel" style="width: 40px;">(First)</span>
                         <input type="text" style="flex:1" value="" placeholder="Enter Husband's First Name">
                     </div>
-                    <div style="display: flex; margin-bottom: 2px;">
+                    <div style="display: flex; margin-bottom: 0px;">
                         <span class="field-sublabel" style="width: 40px;">(Middle)</span>
                         <input type="text" style="flex:1" value="" placeholder="Enter Husband's Middle Name">
                     </div>
@@ -937,11 +900,11 @@
                     </div>
                 </td>
                 <td>
-                    <div style="display: flex; margin-bottom: 2px;">
+                    <div style="display: flex; margin-bottom: 0px;">
                         <span class="field-sublabel" style="width: 40px;">(First)</span>
                         <input type="text" style="flex:1" value="" placeholder="Enter Wife's First Name">
                     </div>
-                    <div style="display: flex; margin-bottom: 2px;">
+                    <div style="display: flex; margin-bottom: 0px;">
                         <span class="field-sublabel" style="width: 40px;">(Middle)</span>
                         <input type="text" style="flex:1" value="" placeholder="Enter Wife's Middle Name">
                     </div>
@@ -1348,74 +1311,22 @@
 </div>
 
 <script>
-    function toggleDataOnly(checkbox) {
-        if (checkbox.checked) {
-            document.body.classList.add('print-data-only');
-        } else {
-            document.body.classList.remove('print-data-only');
-        }
+    function printDataOnly() {
+        document.body.classList.add('print-data-only');
+        window.print();
     }
 
-    function updatePaperSize() {
-        const size = document.getElementById('paperSize').value;
-        const container = document.querySelector('.page-container');
-        const styleBlock = document.getElementById('dynamic-print-style') || document.createElement('style');
-        styleBlock.id = 'dynamic-print-style';
-        
-        if (size === 'legal') {
-            container.style.minHeight = '14in';
-            styleBlock.innerHTML = '@media print { @page { size: 8.5in 14in; margin: 0; } }';
-        } else {
-            container.style.minHeight = '13in';
-            styleBlock.innerHTML = '@media print { @page { size: 8.5in 13in; margin: 0; } }';
-        }
-        document.head.appendChild(styleBlock);
-    }
+    window.addEventListener('afterprint', function() {
+        document.body.classList.remove('print-data-only');
+    });
 
-    function updateTransform() {
-        const top = document.getElementById('marginTop').value; // mm
-        const left = document.getElementById('marginLeft').value; // mm
-        const scaleVal = document.getElementById('scale').value;
-        const scale = scaleVal / 100;
-        
-        // Save to storage
-        localStorage.setItem('printConfig', JSON.stringify({top, left, scale: scaleVal}));
-        
-        const container = document.querySelector('.page-container');
-        
-        // Convert mm to pixels (approx 3.78 px per mm) or use translate unit
-        // Using mm directly in translate is supported
-        container.style.transform = `translate(${left}mm, ${top}mm) scale(${scale})`;
-        container.style.transformOrigin = 'top left';
-        
-        // Visual indicator that transform is active
-        if (top != 0 || left != 0 || scale != 1) {
-            container.style.border = '2px dashed orange'; // Warn on screen
-        } else {
-            container.style.border = 'none';
-        }
-    }
-    
-    // Initialize
-    // Load saved settings
-    const savedConfig = JSON.parse(localStorage.getItem('printConfig') || '{}');
-    if (savedConfig.top !== undefined) document.getElementById('marginTop').value = savedConfig.top;
-    if (savedConfig.left !== undefined) document.getElementById('marginLeft').value = savedConfig.left;
-    if (savedConfig.scale !== undefined) document.getElementById('scale').value = savedConfig.scale;
-
-    updatePaperSize();
-    updateTransform(); // Apply loaded settings
-    adjustAutoResizeInputs();
-
-    // Auto-resize font for long text
     function adjustAutoResizeInputs() {
         const inputs = document.querySelectorAll('.auto-resize');
         inputs.forEach(input => {
             const resize = () => {
-                let currentSize = 10; // Start with default size (10pt)
+                let currentSize = 10;
                 input.style.fontSize = currentSize + 'pt';
                 
-                // Reduce size until it fits width or hits minimum (5pt)
                 while (input.scrollWidth > input.clientWidth && currentSize > 5) {
                     currentSize -= 0.5;
                     input.style.fontSize = currentSize + 'pt';
@@ -1423,10 +1334,11 @@
             };
             
             input.addEventListener('input', resize);
-            // Run on load/init
             resize();
         });
     }
+
+    adjustAutoResizeInputs();
 </script>
 
 <!-- Screensaver Overlay -->
