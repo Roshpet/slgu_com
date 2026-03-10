@@ -47,17 +47,29 @@
                 visibility: visible !important; /* The container itself must be visible for positioning context? */
                 /* Actually, if container is hidden, children can be visible, but background of container is gone. */
                 position: relative;
+                transform: translate(var(--print-offset-x, 0in), var(--print-offset-y, 0in)) !important;
+            }
+            /* Default auto alignment offsets without manual scaling */
+            body.print-data-only {
+                --print-offset-x: 0in;
+                --print-offset-y: 0.08in; /* ~0.2cm downward to match pre-printed baseline */
             }
 
             /* Show Input Values */
             body.print-data-only input,
             body.print-data-only textarea {
                 visibility: visible !important;
-                color: #b7f805ff !important;
+                color: #0509f8ff !important;
                 background: transparent !important;
                 border: none !important;
                 /* Ensure inputs don't have borders even if they had them before */
                 border-bottom: none !important; 
+                font-family: Arial, sans-serif !important;
+                font-size: 10pt !important;
+                line-height: 1 !important;
+                letter-spacing: 0 !important;
+                transform-origin: top left !important;
+                display: inline-block !important;
             }
             
             /* Hide Placeholders in print mode */
@@ -85,6 +97,10 @@
             }
             body.print-data-only .info-label {
                 display: none !important;
+            }
+
+            body.print-data-only .auto-resize {
+                font-size: 10pt !important;
             }
 
             /* Custom Checkbox Printing - Disabled per request */
@@ -119,12 +135,12 @@
             
             table.main-form {
                 position: static !important;
-                margin-top: 1.38in !important; /* Reduced from 1.57in to compensate for padding */
+                margin-top: 1.46in !important; /* Reduced from 1.57in to compensate for padding */
                 width: 100% !important;
             }
 
             body.print-data-only .bottom-section {
-                margin-top: 0.12in !important;
+                margin-top: 0.04in !important;
                 position: static !important;
             }
 
@@ -170,7 +186,7 @@
             /* User Request: Distance of wife column from husband column should be 0.39in */
             /* Previously X-shift was 0.94in. Reducing to 0.39in to bring it closer (or align to 0.39in gap) */
             table.main-form tbody tr:nth-child(2) td:nth-child(3) input {
-                transform: translate(0.39in, -0.32in) !important; /* Net move up ~1.5cm */
+                transform: translate(0.47in, -0.32in) !important;
             }
 
             /* Set height for Section 2 Row to ensure Section 3 starts 0.23in below */
@@ -845,6 +861,11 @@
 
 <div class="controls no-print" style="width: 300px;">
     <button class="btn" onclick="printDataOnly()" style="width: 100%;">🖨️ Print Data</button>
+    {{-- <div style="margin-top: 8px; display: flex; gap: 8px;">
+        <input id="offsetX" type="number" step="0.01" placeholder="X (in)" style="width: 90px;">
+        <input id="offsetY" type="number" step="0.01" placeholder="Y (in)" style="width: 90px;">
+        <button class="btn" onclick="saveOffsets()" style="flex: 1;">Save</button>
+    </div> --}}
 </div>
 
 <div class="page-container">
@@ -1312,12 +1333,15 @@
 
 <script>
     function printDataOnly() {
+        applyOffsets();
         document.body.classList.add('print-data-only');
+        applyPlacements();
         window.print();
     }
 
     window.addEventListener('afterprint', function() {
         document.body.classList.remove('print-data-only');
+        clearPlacements();
     });
 
     function adjustAutoResizeInputs() {
@@ -1338,7 +1362,78 @@
         });
     }
 
+    function applyOffsets() {
+        const x = localStorage.getItem('printOffsetXIn');
+        const y = localStorage.getItem('printOffsetYIn');
+        if (x) {
+            document.documentElement.style.setProperty('--print-offset-x', x + 'in');
+            const ix = document.getElementById('offsetX');
+            if (ix) ix.value = x;
+        }
+        if (y) {
+            document.documentElement.style.setProperty('--print-offset-y', y + 'in');
+            const iy = document.getElementById('offsetY');
+            if (iy) iy.value = y;
+        }
+    }
+
+    function saveOffsets() {
+        const ix = document.getElementById('offsetX');
+        const iy = document.getElementById('offsetY');
+        const x = ix && ix.value !== '' ? parseFloat(ix.value) : 0;
+        const y = iy && iy.value !== '' ? parseFloat(iy.value) : 0;
+        localStorage.setItem('printOffsetXIn', String(x));
+        localStorage.setItem('printOffsetYIn', String(y));
+        applyOffsets();
+    }
+
     adjustAutoResizeInputs();
+    applyOffsets();
+    const placementsConfig = [
+            { key: 'sec2-wife', selector: 'table.main-form tbody tr:nth-child(2) td:nth-child(3) input', x: 0.47, y: -0.32 },
+            { key: 'sec2-wife-day', selector: 'table.main-form tbody tr:nth-child(2) td:nth-child(3) > div:nth-child(1) input', x: 0.50, y: -0.32 },
+            { key: 'sec4-husband', selector: 'table.main-form tbody tr:nth-child(4) td:nth-child(2) input', x: 0.00, y: -0.24 },
+            { key: 'sec4-wife', selector: 'table.main-form tbody tr:nth-child(4) td:nth-child(3) input', x: 0.35, y: -0.24 },
+            { key: 'sec6-husband', selector: 'table.main-form tbody tr:nth-child(6) td:nth-child(2) input', x: 0.00, y: -0.20 },
+            { key: 'sec6-wife', selector: 'table.main-form tbody tr:nth-child(6) td:nth-child(3) input', x: 0.75, y: -0.20 },
+            { key: 'sec7-husband', selector: 'table.main-form tbody tr:nth-child(7) td:nth-child(2) input', x: 0.00, y: -0.24 },
+            { key: 'sec7-wife', selector: 'table.main-form tbody tr:nth-child(7) td:nth-child(3) input', x: 0.75, y: -0.24 },
+            { key: 'sec8-husband', selector: 'table.main-form tbody tr:nth-child(8) td:nth-child(2) input', x: 0.00, y: -0.16 },
+            { key: 'sec8-wife', selector: 'table.main-form tbody tr:nth-child(8) td:nth-child(3) input', x: 0.75, y: -0.16 },
+            { key: 'sec9-husband', selector: 'table.main-form tbody tr:nth-child(9) td:nth-child(2) input', x: 0.00, y: -0.12 },
+            { key: 'sec9-wife', selector: 'table.main-form tbody tr:nth-child(9) td:nth-child(3) input', x: 0.75, y: -0.12 },
+            { key: 'sec10-husband', selector: 'table.main-form tbody tr:nth-child(10) td:nth-child(2) input', x: 0.00, y: 0.00 },
+            { key: 'sec10-wife', selector: 'table.main-form tbody tr:nth-child(10) td:nth-child(3) input', x: 0.75, y: 0.00 },
+            { key: 'sec11-husband', selector: 'table.main-form tbody tr:nth-child(11) td:nth-child(2) input', x: 0.00, y: 0.08 },
+            { key: 'sec11-wife', selector: 'table.main-form tbody tr:nth-child(11) td:nth-child(3) input', x: 0.75, y: 0.08 },
+            { key: 'sec12-husband', selector: 'table.main-form tbody tr:nth-child(12) td:nth-child(2) input', x: 0.00, y: 0.11 },
+            { key: 'sec12-wife', selector: 'table.main-form tbody tr:nth-child(12) td:nth-child(3) input', x: 0.75, y: 0.11 },
+            { key: 'sec13-husband', selector: 'table.main-form tbody tr:nth-child(13) td:nth-child(2) input', x: 0.00, y: 0.00 },
+            { key: 'sec13-wife', selector: 'table.main-form tbody tr:nth-child(13) td:nth-child(3) input', x: 0.75, y: 0.00 },
+            { key: 'sec14-husband', selector: 'table.main-form tbody tr:nth-child(14) td:nth-child(2) input', x: 0.00, y: -0.05 },
+            { key: 'sec14-wife', selector: 'table.main-form tbody tr:nth-child(14) td:nth-child(3) input', x: 0.75, y: -0.05 },
+    ];
+    function applyPlacements() {
+        placementsConfig.forEach(p => {
+            const els = document.querySelectorAll(p.selector);
+            if (!els || els.length === 0) return;
+            const dx = parseFloat(localStorage.getItem('place.' + p.key + '.dx') || '0');
+            const dy = parseFloat(localStorage.getItem('place.' + p.key + '.dy') || '0');
+            const x = p.x + dx;
+            const y = p.y + dy;
+            els.forEach(el => {
+                el.style.setProperty('transform', 'translate(' + x + 'in, ' + y + 'in)', 'important');
+            });
+        });
+    }
+    function clearPlacements() {
+        placementsConfig.forEach(p => {
+            const els = document.querySelectorAll(p.selector);
+            els.forEach(el => {
+                el.style.removeProperty('transform');
+            });
+        });
+    }
 </script>
 
 <!-- Screensaver Overlay -->
